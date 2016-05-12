@@ -11,9 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using NAudio.Wave;
-//Git Test
-//Commit Test
-//Затестим ещё одно изменение
 
 namespace _6
 {
@@ -44,9 +41,9 @@ namespace _6
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            Open.Width = this.Width - 40;
-            listBox1.Width = this.Width - 40;
-            listBox1.Height = this.Height - 130;
+            Open.Width = this.Width - 24;
+            listBox1.Width = this.Width - 25;
+            listBox1.Height = this.Height - 125;
         }
 
         private void Open_Click(object sender, EventArgs e)
@@ -132,18 +129,18 @@ namespace _6
             {
                 if (listBox1.SelectedIndex != listBox1.Items.Count - 1)
                 {
+                    nowplaying++;
                     //listBox1.SetSelected(listBox1.SelectedIndex + 1, true);
                     if (nowplaying > 0)
                     {
                         listBox1.SelectedIndex = nowplaying;
-                        WaveStream pcm = WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(playList[(string)listBox1.SelectedItem + 1]));
+                        WaveStream pcm = WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(playList[(string)listBox1.SelectedItem]));
                         stream = new BlockAlignReductionStream(pcm);
                         if (output == null)
                             output = new DirectSoundOut();
                         output.Init(stream);
                         output.Play();
                     }
-                    nowplaying++;
                 }
                 else
                 {
