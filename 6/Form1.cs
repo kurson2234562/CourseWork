@@ -125,12 +125,12 @@ namespace _6
 
         private void Next_Click(object sender, EventArgs e)
         {
+           
             if (listBox1.Items.Count > 0)
             {
                 if (listBox1.SelectedIndex != listBox1.Items.Count - 1)
                 {
                     nowplaying++;
-                    //listBox1.SetSelected(listBox1.SelectedIndex + 1, true);
                     if (nowplaying > 0)
                     {
                         listBox1.SelectedIndex = nowplaying;
@@ -147,23 +147,44 @@ namespace _6
                     listBox1.SetSelected(0, true);
                     listBox1_MouseDoubleClick(sender, (MouseEventArgs)e);
                 }
+                if (output != null)
+                {
+                    var mp3File = TagLib.File.Create(playList[(string)listBox1.SelectedItem]);
+                    label1.Text = String.Join(",", mp3File.Tag.Performers) + " - " + mp3File.Tag.Title + " \r(" + mp3File.Tag.Album + ", " + mp3File.Tag.Year + ")            " + mp3File.Properties.Duration.ToString("mm\\:ss");//+" "+mp3File.Tag.FirstGenre;
+                    timer1.Interval = (mp3File.Properties.Duration.Seconds + mp3File.Properties.Duration.Minutes * 60 + mp3File.Properties.Duration.Hours * 3600) * 1000;
+                }
             }
         }
 
         private void Previous_Click(object sender, EventArgs e)
         {
+          
             if (listBox1.Items.Count > 0)
             {
-                if (listBox1.SelectedIndex !=0)
+                if (listBox1.SelectedIndex > 0)
                 {
-                    timer1.Interval = dur;
-                    listBox1.SetSelected(listBox1.SelectedIndex -1, true);
-                    listBox1_MouseDoubleClick(sender, (MouseEventArgs)e);
+                    --nowplaying;
+                    if (nowplaying >= 0)
+                    {
+                        listBox1.SelectedIndex = nowplaying;
+                        WaveStream pcm = WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(playList[(string)listBox1.SelectedItem]));
+                        stream = new BlockAlignReductionStream(pcm);
+                        if (output == null)
+                            output = new DirectSoundOut();
+                        output.Init(stream);
+                        output.Play();
+                    }
                 }
                 else
                 {
                     listBox1.SetSelected(listBox1.Items.Count - 1, true);
                     listBox1_MouseDoubleClick(sender, (MouseEventArgs)e);
+                }
+                if (output != null)
+                {
+                    var mp3File = TagLib.File.Create(playList[(string)listBox1.SelectedItem]);
+                    label1.Text = String.Join(",", mp3File.Tag.Performers) + " - " + mp3File.Tag.Title + " \r(" + mp3File.Tag.Album + ", " + mp3File.Tag.Year + ")            " + mp3File.Properties.Duration.ToString("mm\\:ss");//+" "+mp3File.Tag.FirstGenre;
+                    timer1.Interval = (mp3File.Properties.Duration.Seconds + mp3File.Properties.Duration.Minutes * 60 + mp3File.Properties.Duration.Hours * 3600) * 1000;
                 }
             }
         }
