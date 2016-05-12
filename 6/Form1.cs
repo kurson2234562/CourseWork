@@ -13,6 +13,8 @@ using System.Windows.Forms;
 using NAudio.Wave;
 //Git Test
 //Commit Test
+//Затестим ещё одно изменение
+
 namespace _6
 {
     public partial class Form1 : Form
@@ -44,7 +46,7 @@ namespace _6
         {
             Open.Width = this.Width - 40;
             listBox1.Width = this.Width - 40;
-            listBox1.Height = this.Height - 150;
+            listBox1.Height = this.Height - 130;
         }
 
         private void Open_Click(object sender, EventArgs e)
