@@ -25,8 +25,24 @@ namespace _6
         private BlockAlignReductionStream stream = null;
         private DirectSoundOut output = null;
         int index = 0;
-        int dur = 0;
+        //int dur = 0;
         private int x = 0,y=0;
+
+        private void FollowSize()
+        {
+            OpenButton.Width = this.Width - 24;
+            PlayListComponent.Width = this.Width - 24;
+            PlayListComponent.Height = this.Height - 125;
+            ResizePanel.Width = this.Width;
+            CloseButton.Location = new System.Drawing.Point(this.Width - 36, 0);
+            MaximizeButton.Location = new System.Drawing.Point(this.Width - 72, 0);
+            MinimizeButton.Location = new System.Drawing.Point(this.Width - 108, 0);
+            PreviousButton.Width = (this.Width - 48) / 3;
+            PlayPauseButton.Location = new System.Drawing.Point(PreviousButton.Width + 24, 94);
+            PlayPauseButton.Width = (this.Width - 48) / 3;
+            NextButton.Location = new System.Drawing.Point(2 * PreviousButton.Width + 36, 94);
+            NextButton.Width = (this.Width - 48) / 3;
+        }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -43,9 +59,10 @@ namespace _6
 
         private void Form1_Resize(object sender, EventArgs e)
         {
-            Open.Width = this.Width - 24;
-            PlayListComponent.Width = this.Width - 25;
-            PlayListComponent.Height = this.Height - 125;
+            FollowSize();
+            //OpenButton.Width = this.Width - 24;
+            //PlayListComponent.Width = this.Width - 24;
+            //PlayListComponent.Height = this.Height - 125;
         }
 
         private void Open_Click(object sender, EventArgs e)
@@ -67,9 +84,9 @@ namespace _6
                         var mp3File = TagLib.File.Create(fileName);
                         TIMER.Enabled = true;
                     }
-                    Previous.Enabled = true;
-                    PlayPause.Enabled = true;
-                    Next.Enabled = true;
+                    PreviousButton.Enabled = true;
+                    PlayPauseButton.Enabled = true;
+                    NextButton.Enabled = true;
                 }
                 catch (Exception ex)
                 {
@@ -254,18 +271,18 @@ namespace _6
                     this.WindowState = FormWindowState.Normal;
                     break;
             }
-            Open.Width = this.Width - 24;
-            PlayListComponent.Width = this.Width - 25;
-            PlayListComponent.Height = this.Height - 125;
-            ResizePanel.Width = this.Width;
-            CloseButton.Location = new System.Drawing.Point(this.Width - 36, 0);
-            MaximizeButton.Location = new System.Drawing.Point(this.Width - 72, 0);
-            MinimizeButton.Location = new System.Drawing.Point(this.Width - 108, 0);
+            FollowSize();
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void MinimizeButton_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void AboutButton_Click(object sender, EventArgs e)
+        {
+            Form About = new About();
+            About.ShowDialog();
         }
 
         private void panel1_MouseMove(object sender, MouseEventArgs e)
