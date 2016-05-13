@@ -9,7 +9,8 @@ namespace _6
     {
 
         SqlDataAdapter sda;
-        SqlCommandBuilder scb;
+        BindingSource bs1 = new BindingSource();
+        //SqlCommandBuilder scb;
         DataTable dt;
         SqlConnection con = new SqlConnection();
         public DataBase()
@@ -17,21 +18,28 @@ namespace _6
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            sda = new SqlDataAdapter(@"Select * From "+textBox1.Text, con);
-            dt = new DataTable();
-            sda.Fill(dt);
-            dataGridView1.DataSource = dt;
-        }
-
         private void DataBase_Load(object sender, EventArgs e)
         {
-            // TODO: данная строка кода позволяет загрузить данные в таблицу "audio_libDataSet.Group_of_songer". При необходимости она может быть перемещена или удалена.
-            this.group_of_songerTableAdapter.Fill(this.audio_libDataSet.Group_of_songer);
-            // TODO: данная строка кода позволяет загрузить данные в таблицу "audio_libDataSet.Songer". При необходимости она может быть перемещена или удалена.
             this.songerTableAdapter.Fill(this.audio_libDataSet.Songer);
             con.ConnectionString = @"Data Source=.;Initial Catalog=Audio_lib; Integrated Security=true";
+            comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            bs1.DataSource = dt;
+            bindingNavigator1.BindingSource = bs1;
+            dataGridView1.DataSource = bs1;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (comboBox1.SelectedItem.ToString() != "")
+            {
+                sda = new SqlDataAdapter(@"Select * From " + comboBox1.SelectedItem.ToString(), con);
+                dt = new DataTable();
+                sda.Fill(dt);
+                dataGridView1.DataSource = dt;
+            }
+            dataGridView1.Width = dataGridView1.Columns.Count * dataGridView1.Columns[1].Width+50;
+            if(dataGridView1.Columns.Count * dataGridView1.Columns[1].Width + 50 > 430)
+            this.Width = dataGridView1.Columns.Count * dataGridView1.Columns[1].Width+75;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -41,10 +49,19 @@ namespace _6
 
         private void button3_Click(object sender, EventArgs e)
         {
-            sda = new SqlDataAdapter(@"Insert Into Songer Values('BBB','rty',12346)", con);
-            dt = new DataTable();
-            sda.Fill(dt);
-            dataGridView1.DataSource = dt;
+            Form ChangeDatabase = new ChangeDatabase();
+            ChangeDatabase.Show();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            button1.Enabled = true;
+        }
+
+        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            TextBox txt = (TextBox)e.Control;
+            txt.ReadOnly = true;
         }
     }
 }

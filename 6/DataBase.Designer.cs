@@ -31,7 +31,6 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataBase));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.songerBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.audiolibDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.audio_libDataSet = new _6.Audio_libDataSet();
             this.button1 = new System.Windows.Forms.Button();
@@ -52,16 +51,13 @@
             this.button3 = new System.Windows.Forms.Button();
             this.fKGroupofIDSo21B6055DBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.group_of_songerTableAdapter = new _6.Audio_libDataSetTableAdapters.Group_of_songerTableAdapter();
-            this.songerBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.songerBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audiolibDataSetBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audio_libDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).BeginInit();
             this.bindingNavigator1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fKGroupofIDSo21B6055DBindingSource)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.songerBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
@@ -69,13 +65,9 @@
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Location = new System.Drawing.Point(14, 37);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(460, 224);
+            this.dataGridView1.Size = new System.Drawing.Size(493, 224);
             this.dataGridView1.TabIndex = 0;
-            // 
-            // songerBindingSource
-            // 
-            this.songerBindingSource.DataMember = "Songer";
-            this.songerBindingSource.DataSource = this.audiolibDataSetBindingSource;
+            this.dataGridView1.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dataGridView1_EditingControlShowing);
             // 
             // audiolibDataSetBindingSource
             // 
@@ -90,10 +82,11 @@
             // button1
             // 
             this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(66)))), ((int)(((byte)(98)))));
+            this.button1.Enabled = false;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(137, 267);
+            this.button1.Location = new System.Drawing.Point(14, 267);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(121, 23);
             this.button1.TabIndex = 1;
@@ -111,7 +104,7 @@
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(385, 267);
+            this.button2.Location = new System.Drawing.Point(430, 269);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
@@ -143,7 +136,7 @@
             this.bindingNavigator1.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
             this.bindingNavigator1.Name = "bindingNavigator1";
             this.bindingNavigator1.PositionItem = this.bindingNavigatorPositionItem;
-            this.bindingNavigator1.Size = new System.Drawing.Size(486, 25);
+            this.bindingNavigator1.Size = new System.Drawing.Size(523, 25);
             this.bindingNavigator1.TabIndex = 3;
             this.bindingNavigator1.Text = "bindingNavigator1";
             // 
@@ -238,42 +231,43 @@
             this.button3.FlatAppearance.BorderSize = 0;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.ForeColor = System.Drawing.Color.White;
-            this.button3.Location = new System.Drawing.Point(12, 267);
+            this.button3.Location = new System.Drawing.Point(306, 269);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.Size = new System.Drawing.Size(118, 23);
             this.button3.TabIndex = 4;
-            this.button3.Text = "Добавить";
+            this.button3.Text = "Работа с таблицами";
             this.button3.UseVisualStyleBackColor = false;
             this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // fKGroupofIDSo21B6055DBindingSource
-            // 
-            this.fKGroupofIDSo21B6055DBindingSource.DataMember = "FK__Group_of___ID_So__21B6055D";
-            this.fKGroupofIDSo21B6055DBindingSource.DataSource = this.songerBindingSource;
             // 
             // group_of_songerTableAdapter
             // 
             this.group_of_songerTableAdapter.ClearBeforeFill = true;
             // 
-            // songerBindingSource1
+            // comboBox1
             // 
-            this.songerBindingSource1.DataMember = "Songer";
-            this.songerBindingSource1.DataSource = this.audiolibDataSetBindingSource;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(264, 270);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(69, 20);
-            this.textBox1.TabIndex = 5;
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Songer",
+            "Genre",
+            "Song",
+            "Album_Info",
+            "Composition_Album",
+            "Listening",
+            "Groups",
+            "Participation"});
+            this.comboBox1.Location = new System.Drawing.Point(141, 269);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(159, 21);
+            this.comboBox1.TabIndex = 6;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // DataBase
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(37)))), ((int)(((byte)(61)))));
-            this.ClientSize = new System.Drawing.Size(486, 302);
-            this.Controls.Add(this.textBox1);
+            this.ClientSize = new System.Drawing.Size(523, 302);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.bindingNavigator1);
             this.Controls.Add(this.button2);
@@ -284,14 +278,12 @@
             this.Text = "DataBase";
             this.Load += new System.EventHandler(this.DataBase_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.songerBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.audiolibDataSetBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.audio_libDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).EndInit();
             this.bindingNavigator1.ResumeLayout(false);
             this.bindingNavigator1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.fKGroupofIDSo21B6055DBindingSource)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.songerBindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -303,7 +295,6 @@
         private System.Windows.Forms.BindingSource audiolibDataSetBindingSource;
         private Audio_libDataSet audio_libDataSet;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.BindingSource songerBindingSource;
         private Audio_libDataSetTableAdapters.SongerTableAdapter songerTableAdapter;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.BindingNavigator bindingNavigator1;
@@ -321,7 +312,6 @@
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.BindingSource fKGroupofIDSo21B6055DBindingSource;
         private Audio_libDataSetTableAdapters.Group_of_songerTableAdapter group_of_songerTableAdapter;
-        private System.Windows.Forms.BindingSource songerBindingSource1;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
