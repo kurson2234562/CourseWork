@@ -31,60 +31,61 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(DataBase));
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.audio_libDataSet = new _6.Audio_libDataSet();
-            this.audiolibDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.button1 = new System.Windows.Forms.Button();
             this.songerBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.audiolibDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.audio_libDataSet = new _6.Audio_libDataSet();
+            this.button1 = new System.Windows.Forms.Button();
             this.songerTableAdapter = new _6.Audio_libDataSetTableAdapters.SongerTableAdapter();
-            this.iDSongerDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.fIODataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.aliasDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.phoneDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.button2 = new System.Windows.Forms.Button();
             this.bindingNavigator1 = new System.Windows.Forms.BindingNavigator(this.components);
+            this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
+            this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
+            this.bindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveFirstItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMovePreviousItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
             this.bindingNavigatorPositionItem = new System.Windows.Forms.ToolStripTextBox();
-            this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
             this.bindingNavigatorSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
+            this.button3 = new System.Windows.Forms.Button();
+            this.fKGroupofIDSo21B6055DBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.group_of_songerTableAdapter = new _6.Audio_libDataSetTableAdapters.Group_of_songerTableAdapter();
+            this.songerBindingSource1 = new System.Windows.Forms.BindingSource(this.components);
+            this.textBox1 = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.audio_libDataSet)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.audiolibDataSetBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.songerBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.audiolibDataSetBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.audio_libDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).BeginInit();
             this.bindingNavigator1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fKGroupofIDSo21B6055DBindingSource)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.songerBindingSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // dataGridView1
             // 
-            this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.iDSongerDataGridViewTextBoxColumn,
-            this.fIODataGridViewTextBoxColumn,
-            this.aliasDataGridViewTextBoxColumn,
-            this.phoneDataGridViewTextBoxColumn});
-            this.dataGridView1.DataSource = this.songerBindingSource;
             this.dataGridView1.Location = new System.Drawing.Point(14, 37);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(446, 149);
+            this.dataGridView1.Size = new System.Drawing.Size(460, 224);
             this.dataGridView1.TabIndex = 0;
             // 
-            // audio_libDataSet
+            // songerBindingSource
             // 
-            this.audio_libDataSet.DataSetName = "Audio_libDataSet";
-            this.audio_libDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            this.songerBindingSource.DataMember = "Songer";
+            this.songerBindingSource.DataSource = this.audiolibDataSetBindingSource;
             // 
             // audiolibDataSetBindingSource
             // 
             this.audiolibDataSetBindingSource.DataSource = this.audio_libDataSet;
             this.audiolibDataSetBindingSource.Position = 0;
+            // 
+            // audio_libDataSet
+            // 
+            this.audio_libDataSet.DataSetName = "Audio_libDataSet";
+            this.audio_libDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
             // 
             // button1
             // 
@@ -92,47 +93,17 @@
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Location = new System.Drawing.Point(14, 192);
+            this.button1.Location = new System.Drawing.Point(137, 267);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(121, 23);
             this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
+            this.button1.Text = "Показать таблицу";
             this.button1.UseVisualStyleBackColor = false;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // songerBindingSource
-            // 
-            this.songerBindingSource.DataMember = "Songer";
-            this.songerBindingSource.DataSource = this.audiolibDataSetBindingSource;
             // 
             // songerTableAdapter
             // 
             this.songerTableAdapter.ClearBeforeFill = true;
-            // 
-            // iDSongerDataGridViewTextBoxColumn
-            // 
-            this.iDSongerDataGridViewTextBoxColumn.DataPropertyName = "ID_Songer";
-            this.iDSongerDataGridViewTextBoxColumn.HeaderText = "ID_Songer";
-            this.iDSongerDataGridViewTextBoxColumn.Name = "iDSongerDataGridViewTextBoxColumn";
-            this.iDSongerDataGridViewTextBoxColumn.ReadOnly = true;
-            // 
-            // fIODataGridViewTextBoxColumn
-            // 
-            this.fIODataGridViewTextBoxColumn.DataPropertyName = "FIO";
-            this.fIODataGridViewTextBoxColumn.HeaderText = "FIO";
-            this.fIODataGridViewTextBoxColumn.Name = "fIODataGridViewTextBoxColumn";
-            // 
-            // aliasDataGridViewTextBoxColumn
-            // 
-            this.aliasDataGridViewTextBoxColumn.DataPropertyName = "Alias";
-            this.aliasDataGridViewTextBoxColumn.HeaderText = "Alias";
-            this.aliasDataGridViewTextBoxColumn.Name = "aliasDataGridViewTextBoxColumn";
-            // 
-            // phoneDataGridViewTextBoxColumn
-            // 
-            this.phoneDataGridViewTextBoxColumn.DataPropertyName = "Phone";
-            this.phoneDataGridViewTextBoxColumn.HeaderText = "Phone";
-            this.phoneDataGridViewTextBoxColumn.Name = "phoneDataGridViewTextBoxColumn";
             // 
             // button2
             // 
@@ -140,12 +111,13 @@
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Location = new System.Drawing.Point(387, 192);
+            this.button2.Location = new System.Drawing.Point(385, 267);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 2;
             this.button2.Text = "Закрыть";
             this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // bindingNavigator1
             // 
@@ -171,9 +143,34 @@
             this.bindingNavigator1.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
             this.bindingNavigator1.Name = "bindingNavigator1";
             this.bindingNavigator1.PositionItem = this.bindingNavigatorPositionItem;
-            this.bindingNavigator1.Size = new System.Drawing.Size(472, 25);
+            this.bindingNavigator1.Size = new System.Drawing.Size(486, 25);
             this.bindingNavigator1.TabIndex = 3;
             this.bindingNavigator1.Text = "bindingNavigator1";
+            // 
+            // bindingNavigatorAddNewItem
+            // 
+            this.bindingNavigatorAddNewItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigatorAddNewItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorAddNewItem.Image")));
+            this.bindingNavigatorAddNewItem.Name = "bindingNavigatorAddNewItem";
+            this.bindingNavigatorAddNewItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorAddNewItem.Size = new System.Drawing.Size(23, 22);
+            this.bindingNavigatorAddNewItem.Text = "Добавить";
+            // 
+            // bindingNavigatorCountItem
+            // 
+            this.bindingNavigatorCountItem.Name = "bindingNavigatorCountItem";
+            this.bindingNavigatorCountItem.Size = new System.Drawing.Size(43, 22);
+            this.bindingNavigatorCountItem.Text = "для {0}";
+            this.bindingNavigatorCountItem.ToolTipText = "Общее число элементов";
+            // 
+            // bindingNavigatorDeleteItem
+            // 
+            this.bindingNavigatorDeleteItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.bindingNavigatorDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem.Image")));
+            this.bindingNavigatorDeleteItem.Name = "bindingNavigatorDeleteItem";
+            this.bindingNavigatorDeleteItem.RightToLeftAutoMirrorImage = true;
+            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(23, 22);
+            this.bindingNavigatorDeleteItem.Text = "Удалить";
             // 
             // bindingNavigatorMoveFirstItem
             // 
@@ -207,16 +204,9 @@
             this.bindingNavigatorPositionItem.Text = "0";
             this.bindingNavigatorPositionItem.ToolTipText = "Текущее положение";
             // 
-            // bindingNavigatorCountItem
-            // 
-            this.bindingNavigatorCountItem.Name = "bindingNavigatorCountItem";
-            this.bindingNavigatorCountItem.Size = new System.Drawing.Size(43, 22);
-            this.bindingNavigatorCountItem.Text = "для {0}";
-            this.bindingNavigatorCountItem.ToolTipText = "Общее число элементов";
-            // 
             // bindingNavigatorSeparator1
             // 
-            this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator";
+            this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1";
             this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // bindingNavigatorMoveNextItem
@@ -239,33 +229,52 @@
             // 
             // bindingNavigatorSeparator2
             // 
-            this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator";
+            this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
             this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // bindingNavigatorAddNewItem
+            // button3
             // 
-            this.bindingNavigatorAddNewItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigatorAddNewItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorAddNewItem.Image")));
-            this.bindingNavigatorAddNewItem.Name = "bindingNavigatorAddNewItem";
-            this.bindingNavigatorAddNewItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorAddNewItem.Size = new System.Drawing.Size(23, 22);
-            this.bindingNavigatorAddNewItem.Text = "Добавить";
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(66)))), ((int)(((byte)(98)))));
+            this.button3.FlatAppearance.BorderSize = 0;
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.ForeColor = System.Drawing.Color.White;
+            this.button3.Location = new System.Drawing.Point(12, 267);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 4;
+            this.button3.Text = "Добавить";
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
-            // bindingNavigatorDeleteItem
+            // fKGroupofIDSo21B6055DBindingSource
             // 
-            this.bindingNavigatorDeleteItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigatorDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem.Image")));
-            this.bindingNavigatorDeleteItem.Name = "bindingNavigatorDeleteItem";
-            this.bindingNavigatorDeleteItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(23, 22);
-            this.bindingNavigatorDeleteItem.Text = "Удалить";
+            this.fKGroupofIDSo21B6055DBindingSource.DataMember = "FK__Group_of___ID_So__21B6055D";
+            this.fKGroupofIDSo21B6055DBindingSource.DataSource = this.songerBindingSource;
+            // 
+            // group_of_songerTableAdapter
+            // 
+            this.group_of_songerTableAdapter.ClearBeforeFill = true;
+            // 
+            // songerBindingSource1
+            // 
+            this.songerBindingSource1.DataMember = "Songer";
+            this.songerBindingSource1.DataSource = this.audiolibDataSetBindingSource;
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(264, 270);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(69, 20);
+            this.textBox1.TabIndex = 5;
             // 
             // DataBase
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(37)))), ((int)(((byte)(61)))));
-            this.ClientSize = new System.Drawing.Size(472, 261);
+            this.ClientSize = new System.Drawing.Size(486, 302);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.button3);
             this.Controls.Add(this.bindingNavigator1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -275,12 +284,14 @@
             this.Text = "DataBase";
             this.Load += new System.EventHandler(this.DataBase_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.audio_libDataSet)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.audiolibDataSetBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.songerBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.audiolibDataSetBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.audio_libDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator1)).EndInit();
             this.bindingNavigator1.ResumeLayout(false);
             this.bindingNavigator1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.fKGroupofIDSo21B6055DBindingSource)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.songerBindingSource1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -294,10 +305,6 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.BindingSource songerBindingSource;
         private Audio_libDataSetTableAdapters.SongerTableAdapter songerTableAdapter;
-        private System.Windows.Forms.DataGridViewTextBoxColumn iDSongerDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn fIODataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn aliasDataGridViewTextBoxColumn;
-        private System.Windows.Forms.DataGridViewTextBoxColumn phoneDataGridViewTextBoxColumn;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.BindingNavigator bindingNavigator1;
         private System.Windows.Forms.ToolStripButton bindingNavigatorAddNewItem;
@@ -311,5 +318,10 @@
         private System.Windows.Forms.ToolStripButton bindingNavigatorMoveNextItem;
         private System.Windows.Forms.ToolStripButton bindingNavigatorMoveLastItem;
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.BindingSource fKGroupofIDSo21B6055DBindingSource;
+        private Audio_libDataSetTableAdapters.Group_of_songerTableAdapter group_of_songerTableAdapter;
+        private System.Windows.Forms.BindingSource songerBindingSource1;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
