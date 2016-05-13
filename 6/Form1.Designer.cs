@@ -146,6 +146,7 @@
             this.DataBaseButton.Text = "Работа с БД";
             this.DataBaseButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.DataBaseButton.UseVisualStyleBackColor = false;
+            this.DataBaseButton.Click += new System.EventHandler(this.DataBaseButton_Click);
             // 
             // MaximizeButton
             // 

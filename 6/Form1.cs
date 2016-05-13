@@ -285,6 +285,12 @@ namespace _6
             About.ShowDialog();
         }
 
+        private void DataBaseButton_Click(object sender, EventArgs e)
+        {
+            Form DataBase = new DataBase();
+            DataBase.Show();
+        }
+
         private void panel1_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.Button == System.Windows.Forms.MouseButtons.Left)
