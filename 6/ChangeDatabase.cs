@@ -98,6 +98,7 @@ namespace _6
                 int i = 0;
                 int cnt = dt.Columns.Count;
                 groupBox1.Visible = true;
+                groupBox2.Visible = true;
                 foreach (Control c in groupBox1.Controls)
                 {
                     if (i < cnt)
@@ -160,12 +161,12 @@ namespace _6
                       else MessageBox.Show("Введите данные в каждое поле");
                     break;
                 case "Song":
-                    if ((textBox1.Text != "") && (textBox2.Text != "") && (textBox3.Text != "") && (textBox4.Text != ""))
+                    if ((textBox2.Text != "") && (textBox3.Text != "") && (textBox4.Text != ""))
                         sda = new SqlDataAdapter(@"Insert Into Song Values('" + textBox2.Text + "','" + textBox3.Text + "'," + textBox4.Text + ")", con);
                       else MessageBox.Show("Введите данные в каждое поле");
                     break;
                 case "Songer":
-                    if ((textBox1.Text != "") && (textBox2.Text != "") && (textBox3.Text != "") && (textBox4.Text != "") && (textBox5.Text != ""))
+                    if ((textBox2.Text != "") && (textBox3.Text != "") && (textBox4.Text != "") && (textBox5.Text != ""))
                         sda = new SqlDataAdapter(@"Insert Into Songer Values('" + textBox2.Text + "','" + textBox3.Text + "','" + textBox4.Text + "','" + textBox5.Text + "')", con);
                       else MessageBox.Show("Введите данные в каждое поле");
                     break;
@@ -174,6 +175,19 @@ namespace _6
             sda.Fill(dt);
             dataGridView1.DataSource = dt;
             ShowButton_Click(sender, e);
+            int i = 0;
+            int cnt = dt.Columns.Count;
+            foreach (Control c in groupBox1.Controls)
+            {
+                if (i < cnt)
+                {
+                    if (c is TextBox)
+                    {
+                        (c as TextBox).Clear();
+                        i++;
+                    }
+                }
+            }
         }
 
         private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
@@ -221,6 +235,20 @@ namespace _6
                         e.Handled = true;
                     break;
             }
+        }
+
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            /* SELECT *
+               FROM(SELECT ROW_NUMBER() OVER(ORDER BY(SELECT 1)) AS SrNo, ID_Album FROM Album_Info) as Test--INNER JOIN Album_Info ON Album_Info.ID_Album = Test.ID_Album
+               WHERE SrNo = 4*/
+            if ((numericUpDown1.Value <= dt.Rows.Count) && (numericUpDown1.Value != 0))
+                sda = new SqlDataAdapter(@"DELETE FROM " + comboBox1.SelectedItem.ToString() + " Where " + dt.Columns[0] + "=(Select " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + " FROM(SELECT ROW_NUMBER() OVER(ORDER BY(SELECT 1)) AS SrNo, " + dt.Columns[0] + " FROM " + comboBox1.SelectedItem.ToString() + ") as Test INNER JOIN " + comboBox1.SelectedItem.ToString() + " ON " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + "= Test." + dt.Columns[0] + " WHERE SrNo = " + numericUpDown1.Value + ")", con);
+            else MessageBox.Show("Записи с таким индексом не существует","Error!");
+            dt = new DataTable();
+            sda.Fill(dt);
+            dataGridView1.DataSource = dt;
+            ShowButton_Click(sender, e);
         }
 
         private void ChangeDatabase_MouseDown(object sender, MouseEventArgs e)
