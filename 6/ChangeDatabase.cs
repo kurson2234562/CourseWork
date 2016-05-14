@@ -36,6 +36,7 @@ namespace _6
             ClearComp();
             this.songerTableAdapter.Fill(this.audio_libDataSet.Songer);
             con.ConnectionString = @"Data Source=.;Initial Catalog=Audio_lib; Integrated Security=true";
+            con.Open();
             comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             ShowButton.Enabled = false;
         }
@@ -48,6 +49,33 @@ namespace _6
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             ShowButton.Enabled = true;
+            switch (comboBox1.SelectedItem.ToString())
+            {
+                case "Album_Info":
+                    textBox1.Enabled = false;
+                    break;
+                case "Composition_Album":
+                    textBox1.Enabled = true;
+                    break;
+                case "Genre":
+                    textBox1.Enabled = false;
+                    break;
+                case "Groups":
+                    textBox1.Enabled = false;
+                    break;
+                case "Listening":
+                    textBox1.Enabled = true;
+                    break;
+                case "Participation":
+                    textBox1.Enabled = true;
+                    break;
+                case "Song":
+                    textBox1.Enabled = false;
+                    break;
+                case "Songer":
+                    textBox1.Enabled = false;
+                    break;
+            }
         }
 
         private void ChangeDatabase_MouseMove(object sender, MouseEventArgs e)
@@ -93,17 +121,106 @@ namespace _6
                         }
                     }
                 }
-                dataGridView1.Width = dataGridView1.Columns.Count * dataGridView1.Columns[1].Width + 50;
+                dataGridView1.Width = (dataGridView1.Columns.Count + 1) * dataGridView1.Columns[1].Width - 39;
             }
         }
 
         private void InsertButton_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(@"Insert Into " + comboBox1.SelectedItem.ToString() + "Values(" + textBox1.Text + "," + textBox2.Text + "," + textBox3.Text + "," + textBox4.Text + "," + textBox5.Text + ")");
-            sda = new SqlDataAdapter(@"Insert Into " + comboBox1.SelectedItem.ToString()+"Values("+textBox1.Text+"," + textBox2.Text + "," + textBox3.Text + "," + textBox4.Text + "," + textBox5.Text + ")", con);
+            switch (comboBox1.SelectedItem.ToString())
+            {
+                case "Album_Info":
+                    if ((textBox2.Text != "") && (textBox3.Text != "") && (textBox4.Text != ""))
+                        sda = new SqlDataAdapter(@"Insert Into Album_Info Values('" + textBox2.Text + "','" + textBox3.Text + "'," + textBox4.Text + ")", con);
+                    else MessageBox.Show("Введите данные в каждое поле");
+                    break;
+                case "Composition_album":
+                    if ((textBox1.Text != "") && (textBox2.Text != ""))
+                        sda = new SqlDataAdapter(@"Insert Into Composition_Album Values(" + textBox1.Text + "," + textBox2.Text + ")", con);
+                    else MessageBox.Show("Введите данные в каждое поле");
+                    break;
+                case "Genre":
+                    if (textBox2.Text != "")
+                        sda = new SqlDataAdapter(@"Insert Into Genre Values('" + textBox2.Text + "')", con);
+                      else MessageBox.Show("Введите данные в каждое поле");
+                    break;
+                case "Groups":
+                    if (textBox2.Text != "")
+                        sda = new SqlDataAdapter(@"Insert Into Groups Values('" + textBox2.Text + "'", con);
+                      else MessageBox.Show("Введите данные в каждое поле");
+                    break;
+                case "Listening":
+                    if ((textBox1.Text != "") && (textBox2.Text != "") && (textBox3.Text != "")) 
+                        sda = new SqlDataAdapter(@"Insert Into Listening Values(" + textBox1.Text + "," + textBox2.Text + ",'" + textBox3.Text + "')", con);
+                      else MessageBox.Show("Введите данные в каждое поле");
+                    break;
+                case "Participation":
+                    if ((textBox1.Text != "") && (textBox2.Text != "") && (textBox3.Text != "") && (textBox4.Text != "") && (textBox5.Text != ""))
+                        sda = new SqlDataAdapter(@"Insert Into Participation Values(" + textBox1.Text + "," + textBox2.Text + ",'" + textBox3.Text + "','" + textBox4.Text + "','" + textBox5.Text + "')", con);
+                      else MessageBox.Show("Введите данные в каждое поле");
+                    break;
+                case "Song":
+                    if ((textBox1.Text != "") && (textBox2.Text != "") && (textBox3.Text != "") && (textBox4.Text != ""))
+                        sda = new SqlDataAdapter(@"Insert Into Song Values('" + textBox2.Text + "','" + textBox3.Text + "'," + textBox4.Text + ")", con);
+                      else MessageBox.Show("Введите данные в каждое поле");
+                    break;
+                case "Songer":
+                    if ((textBox1.Text != "") && (textBox2.Text != "") && (textBox3.Text != "") && (textBox4.Text != "") && (textBox5.Text != ""))
+                        sda = new SqlDataAdapter(@"Insert Into Songer Values('" + textBox2.Text + "','" + textBox3.Text + "','" + textBox4.Text + "','" + textBox5.Text + "')", con);
+                      else MessageBox.Show("Введите данные в каждое поле");
+                    break;
+            }
             dt = new DataTable();
             sda.Fill(dt);
             dataGridView1.DataSource = dt;
+            ShowButton_Click(sender, e);
+        }
+
+        private void textBox1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                e.Handled = true;
+        }
+
+        private void textBox2_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            switch (comboBox1.SelectedItem.ToString())
+            {
+                case "Composition_album":
+                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                        e.Handled = true;
+                    break;
+                case "Listening":
+                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                        e.Handled = true;
+                    break;
+                case "Participation":
+                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                        e.Handled = true;
+                    break;
+            }
+        }
+
+        private void textBox3_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (comboBox1.SelectedItem.ToString() == "Album_Info")
+                if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                    e.Handled = true;
+        }
+
+        private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            switch (comboBox1.SelectedItem.ToString())
+            {
+                case "Album_Info":
+                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                        e.Handled = true;
+                    break;
+                case "Song":
+                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                        e.Handled = true;
+                    break;
+            }
         }
 
         private void ChangeDatabase_MouseDown(object sender, MouseEventArgs e)
