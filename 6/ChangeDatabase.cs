@@ -12,7 +12,14 @@ namespace _6
         DataTable dt;
         SqlConnection con = new SqlConnection();
         private int x = 0, y = 0;
-        void ClearComp()
+
+        void showCountColumns(int i) {
+            for (; i< dt.Columns.Count; i++){
+                comboBox3.Items.Add(dt.Columns[i].ToString());
+            }
+        }
+
+    void ClearComp()
         {
             label1.Text = null;
             label2.Text = null;
@@ -37,7 +44,7 @@ namespace _6
             this.songerTableAdapter.Fill(this.audio_libDataSet.Songer);
             con.ConnectionString = @"Data Source=.;Initial Catalog=Audio_lib; Integrated Security=true";
             con.Open();
-            comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             ShowButton.Enabled = false;
         }
 
@@ -80,7 +87,7 @@ namespace _6
 
         private void ChangeDatabase_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
                 this.Location = new System.Drawing.Point(this.Location.X + (e.X - x), this.Location.Y + (e.Y - y));
             }
@@ -90,6 +97,7 @@ namespace _6
         {
             if (comboBox1.SelectedItem.ToString() != "")
             {
+                groupBox3.Enabled = true;
                 sda = new SqlDataAdapter(@"Select * From " + comboBox1.SelectedItem.ToString(), con);
                 dt = new DataTable();
                 sda.Fill(dt);
@@ -101,11 +109,18 @@ namespace _6
                 groupBox2.Visible = true;
                 groupBox3.Visible = true;
                 comboBox3.Enabled = true;
-                comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-                for (i = 0; i < cnt; i++)
+                comboBox2.Items.Clear();
+                comboBox3.Items.Clear();
+                comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
+                comboBox3.DropDownStyle = ComboBoxStyle.DropDownList;
+                if (dt.Rows.Count > 0)
                 {
-                    comboBox3.Items.Add(dt.Columns[i].ToString());
+                    for (i = 0; i < dt.Rows.Count; i++)
+                    {
+                        comboBox2.Items.Add(i + 1);
+                    }
                 }
+                else groupBox3.Enabled = false;
                 i = 0;
                 foreach (Control c in groupBox1.Controls)
                 {
@@ -131,6 +146,33 @@ namespace _6
                     }
                 }
                 dataGridView1.Width = (dataGridView1.Columns.Count + 1) * dataGridView1.Columns[1].Width - 39;
+                switch (comboBox1.SelectedItem.ToString())
+                {
+                    case "Album_Info":
+                        showCountColumns(1);
+                        break;
+                    case "Composition_album":
+                        showCountColumns(0);
+                        break;
+                    case "Genre":
+                        showCountColumns(1);
+                        break;
+                    case "Groups":
+                        showCountColumns(1);
+                        break;
+                    case "Listening":
+                        showCountColumns(0);
+                        break;
+                    case "Participation":
+                        showCountColumns(0);
+                        break;
+                    case "Song":
+                        showCountColumns(1);
+                        break;
+                    case "Songer":
+                        showCountColumns(1);
+                        break;
+                }
             }
         }
 
@@ -266,6 +308,102 @@ namespace _6
         {
             if (comboBox3.SelectedIndex < 0)
                 MessageBox.Show("Выберите изменяемое поле", "Внимание");
+        }
+
+        private void comboBox3_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void UpdateButton_Click(object sender, EventArgs e)
+        {
+            if ((textBox6.Text != "") && ((comboBox2.SelectedItem.ToString()!="")&&(comboBox3.SelectedItem.ToString()!="")))
+            {
+                switch (comboBox3.SelectedItem.ToString())
+                {
+                    case "Year_of_issue":
+                        sda = new SqlDataAdapter(@"UPDATE " + comboBox1.SelectedItem.ToString() + " SET " + comboBox3.SelectedItem.ToString() + "=" + textBox6.Text + "  Where " + dt.Columns[0] + "=(Select " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + " FROM(SELECT ROW_NUMBER() OVER(ORDER BY(SELECT 1)) AS SrNo, " + dt.Columns[0] + " FROM " + comboBox1.SelectedItem.ToString() + ") as Test INNER JOIN " + comboBox1.SelectedItem.ToString() + " ON " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + "= Test." + dt.Columns[0] + " WHERE SrNo = " + comboBox2.SelectedItem.ToString() + ")", con);
+                        break;
+                    case "ID_Songer":
+                        sda = new SqlDataAdapter(@"UPDATE " + comboBox1.SelectedItem.ToString() + " SET " + comboBox3.SelectedItem.ToString() + "=" + textBox6.Text + "  Where " + dt.Columns[0] + "=(Select " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + " FROM(SELECT ROW_NUMBER() OVER(ORDER BY(SELECT 1)) AS SrNo, " + dt.Columns[0] + " FROM " + comboBox1.SelectedItem.ToString() + ") as Test INNER JOIN " + comboBox1.SelectedItem.ToString() + " ON " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + "= Test." + dt.Columns[0] + " WHERE SrNo = " + comboBox2.SelectedItem.ToString() + ")", con);
+                        break;
+                    case "ID_Album":
+                        sda = new SqlDataAdapter(@"UPDATE " + comboBox1.SelectedItem.ToString() + " SET " + comboBox3.SelectedItem.ToString() + "=" + textBox6.Text + "  Where " + dt.Columns[0] + "=(Select " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + " FROM(SELECT ROW_NUMBER() OVER(ORDER BY(SELECT 1)) AS SrNo, " + dt.Columns[0] + " FROM " + comboBox1.SelectedItem.ToString() + ") as Test INNER JOIN " + comboBox1.SelectedItem.ToString() + " ON " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + "= Test." + dt.Columns[0] + " WHERE SrNo = " + comboBox2.SelectedItem.ToString() + ")", con);
+                        break;
+                    case "ID_Song":
+                        sda = new SqlDataAdapter(@"UPDATE " + comboBox1.SelectedItem.ToString() + " SET " + comboBox3.SelectedItem.ToString() + "=" + textBox6.Text + "  Where " + dt.Columns[0] + "=(Select " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + " FROM(SELECT ROW_NUMBER() OVER(ORDER BY(SELECT 1)) AS SrNo, " + dt.Columns[0] + " FROM " + comboBox1.SelectedItem.ToString() + ") as Test INNER JOIN " + comboBox1.SelectedItem.ToString() + " ON " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + "= Test." + dt.Columns[0] + " WHERE SrNo = " + comboBox2.SelectedItem.ToString() + ")", con);
+                        break;
+                    case "DateTime_Listening":
+                        sda = new SqlDataAdapter(@"UPDATE " + comboBox1.SelectedItem.ToString() + " SET " + comboBox3.SelectedItem.ToString() + "=" + textBox6.Text + "  Where " + dt.Columns[0] + "=(Select " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + " FROM(SELECT ROW_NUMBER() OVER(ORDER BY(SELECT 1)) AS SrNo, " + dt.Columns[0] + " FROM " + comboBox1.SelectedItem.ToString() + ") as Test INNER JOIN " + comboBox1.SelectedItem.ToString() + " ON " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + "= Test." + dt.Columns[0] + " WHERE SrNo = " + comboBox2.SelectedItem.ToString() + ")", con);
+                        break;
+                    case "Date_in":
+                        sda = new SqlDataAdapter(@"UPDATE " + comboBox1.SelectedItem.ToString() + " SET " + comboBox3.SelectedItem.ToString() + "=" + textBox6.Text + "  Where " + dt.Columns[0] + "=(Select " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + " FROM(SELECT ROW_NUMBER() OVER(ORDER BY(SELECT 1)) AS SrNo, " + dt.Columns[0] + " FROM " + comboBox1.SelectedItem.ToString() + ") as Test INNER JOIN " + comboBox1.SelectedItem.ToString() + " ON " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + "= Test." + dt.Columns[0] + " WHERE SrNo = " + comboBox2.SelectedItem.ToString() + ")", con);
+                        break;
+                    case "Date_out":
+                        sda = new SqlDataAdapter(@"UPDATE " + comboBox1.SelectedItem.ToString() + " SET " + comboBox3.SelectedItem.ToString() + "=" + textBox6.Text + "  Where " + dt.Columns[0] + "=(Select " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + " FROM(SELECT ROW_NUMBER() OVER(ORDER BY(SELECT 1)) AS SrNo, " + dt.Columns[0] + " FROM " + comboBox1.SelectedItem.ToString() + ") as Test INNER JOIN " + comboBox1.SelectedItem.ToString() + " ON " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + "= Test." + dt.Columns[0] + " WHERE SrNo = " + comboBox2.SelectedItem.ToString() + ")", con);
+                        break;
+                    case "ID_Genre":
+                        sda = new SqlDataAdapter(@"UPDATE " + comboBox1.SelectedItem.ToString() + " SET " + comboBox3.SelectedItem.ToString() + "=" + textBox6.Text + "  Where " + dt.Columns[0] + "=(Select " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + " FROM(SELECT ROW_NUMBER() OVER(ORDER BY(SELECT 1)) AS SrNo, " + dt.Columns[0] + " FROM " + comboBox1.SelectedItem.ToString() + ") as Test INNER JOIN " + comboBox1.SelectedItem.ToString() + " ON " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + "= Test." + dt.Columns[0] + " WHERE SrNo = " + comboBox2.SelectedItem.ToString() + ")", con);
+                        break;
+                    case "Duration":
+                        sda = new SqlDataAdapter(@"UPDATE " + comboBox1.SelectedItem.ToString() + " SET " + comboBox3.SelectedItem.ToString() + "=" + textBox6.Text + "  Where " + dt.Columns[0] + "=(Select " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + " FROM(SELECT ROW_NUMBER() OVER(ORDER BY(SELECT 1)) AS SrNo, " + dt.Columns[0] + " FROM " + comboBox1.SelectedItem.ToString() + ") as Test INNER JOIN " + comboBox1.SelectedItem.ToString() + " ON " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + "= Test." + dt.Columns[0] + " WHERE SrNo = " + comboBox2.SelectedItem.ToString() + ")", con);
+                        break;
+                    default:
+                        sda = new SqlDataAdapter(@"UPDATE " + comboBox1.SelectedItem.ToString() + " SET " + comboBox3.SelectedItem.ToString() + "='" + textBox6.Text + "'  Where " + dt.Columns[0] + "=(Select " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + " FROM(SELECT ROW_NUMBER() OVER(ORDER BY(SELECT 1)) AS SrNo, " + dt.Columns[0] + " FROM " + comboBox1.SelectedItem.ToString() + ") as Test INNER JOIN " + comboBox1.SelectedItem.ToString() + " ON " + comboBox1.SelectedItem.ToString() + "." + dt.Columns[0] + "= Test." + dt.Columns[0] + " WHERE SrNo = " + comboBox2.SelectedItem.ToString() + ")", con);
+                        break;
+                }
+                dt = new DataTable();
+                sda.Fill(dt);
+                dataGridView1.DataSource = dt;
+                ShowButton_Click(sender, e);
+            }
+            else
+                MessageBox.Show("Введите верные данные для изменения!", "Ошибка");
+            textBox6.Clear();
+
+        }
+
+        private void textBox6_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            switch (comboBox3.SelectedItem.ToString())
+            {
+                case "Year_of_issue":
+                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                        e.Handled = true;
+                    break;
+                case "ID_Songer":
+                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                        e.Handled = true;
+                    break;
+                case "ID_Album":
+                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                        e.Handled = true;
+                    break;
+                case "ID_Song":
+                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                        e.Handled = true;
+                    break;
+                case "DateTime_Listening":
+                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 58) && e.KeyChar!=46)
+                        e.Handled = true;
+                    break;
+                case "Date_in":
+                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57) && e.KeyChar!=46)
+                        e.Handled = true;
+                    break;
+                case "Date_out":
+                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                        e.Handled = true;
+                    break;
+                case "ID_Genre":
+                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                        e.Handled = true;
+                    break;
+                case "Duration":
+                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 58))
+                        e.Handled = true;
+                    break;
+            }
         }
 
         private void ChangeDatabase_MouseDown(object sender, MouseEventArgs e)
