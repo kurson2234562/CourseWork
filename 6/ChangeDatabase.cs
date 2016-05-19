@@ -100,11 +100,13 @@ namespace _6
                 groupBox3.Enabled = true;
                 sda = new SqlDataAdapter(@"Select * From " + comboBox1.SelectedItem.ToString(), con);
                 dt = new DataTable();
+                //MessageBox.Show(dt.Rows[1].ToString());
                 sda.Fill(dt);
                 dataGridView1.DataSource = dt;
                 ClearComp();
                 int i = 0;
                 int cnt = dt.Columns.Count;
+                
                 groupBox1.Visible = true;
                 groupBox2.Visible = true;
                 groupBox3.Visible = true;
@@ -404,6 +406,12 @@ namespace _6
                         e.Handled = true;
                     break;
             }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            authorization authorization = new authorization();
+            authorization.Show();
         }
 
         private void ChangeDatabase_MouseDown(object sender, MouseEventArgs e)

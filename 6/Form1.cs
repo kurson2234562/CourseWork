@@ -1,21 +1,19 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Media;
-using System.Linq;
 using System.IO;
-using System.Threading;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Data;
+using System.Data.SqlClient;
 using NAudio.Wave;
 
 namespace _6
 {
     public partial class Application : Form
     {
+        SqlDataAdapter sda;
+        BindingSource bs1 = new BindingSource();
+        DataTable dt;
+        SqlConnection con = new SqlConnection();
         IDictionary<string, string> playList = new Dictionary<string, string>();
         int nowplaying = -1;
         public Application()
@@ -26,8 +24,68 @@ namespace _6
         private DirectSoundOut output = null;
         int index = 0;
         //int dur = 0;
-        private int x = 0,y=0;
+        private int x = 0, y = 0;
 
+        void AddToDb()
+        {
+            bool check = false;
+            string songer = "", song = "", genre = "";
+            SqlDataAdapter sdaSonger, sdaSong, sdaGenre;
+            DataTable dtSonger, dtSong, dtGenre;
+            var mp3File = TagLib.File.Create(playList[(string)PlayListComponent.SelectedItem]);
+            sdaSonger = new SqlDataAdapter(@"Select * From Songer ORDER BY 1", con);
+            sdaGenre = new SqlDataAdapter(@"Select * From Genre ORDER BY 1",con);
+            dtSonger = new DataTable();
+            dtGenre = new DataTable();
+            sdaSonger.Fill(dtSonger);
+            sdaGenre.Fill(dtGenre);
+            dataGridView1.DataSource = dtSonger;
+            int cntSonger = dtSonger.Rows.Count;
+            int posSonger = 0, posGenre = 0, posSong = 0;
+            // String.Join(",", mp3File.Tag.Performers) + " - " + mp3File.Tag.Title + " \r(" + mp3File.Tag.Album + ", " + mp3File.Tag.Year + ")            " + mp3File.Properties.Duration.ToString("mm\\:ss");//+" "+mp3File.Tag.FirstGenre;
+            for (int i = 0; i < cntSonger; i++)
+            {
+                songer = dtSonger.Rows[i].Field<string>("FIO");
+                if (songer != String.Join(",", mp3File.Tag.Performers))
+                {
+                    check = true;
+                    posSonger = i;
+                }
+            }
+            if (!check)
+            {
+                sdaSonger = new SqlDataAdapter(@"Insert INTO Songer(FIO) Values ('" + String.Join(",", mp3File.Tag.Performers) + "')", con);
+                dtSonger = new DataTable();
+                sdaSonger.Fill(dtSonger);
+                dataGridView1.DataSource = dtSonger;
+            }
+            check = false;
+            int cntGenre = dtGenre.Rows.Count;
+            for(int i = 0; i < cntGenre; i++)
+            {
+                genre = dtGenre.Rows[i].Field<string>("Name_genre");
+                if (genre != "")
+                {
+                    if (genre != mp3File.Tag.FirstGenre)
+                    {
+                        check = true;
+                        posGenre = i;
+                    }
+                }
+            }
+            if (!check)
+            {
+                sdaGenre = new SqlDataAdapter(@"Insert INTO Genre(Name_genre) Values ('" + mp3File.Tag.FirstGenre + "')", con);
+                dtGenre = new DataTable();
+                sdaGenre.Fill(dtGenre);
+                dataGridView1.DataSource = dtGenre;
+            }
+            if (posGenre > 0)
+            {
+                int idGenre = dtGenre.Rows[posGenre].Field<int>("ID_Genre");
+                //MessageBox.Show(id.ToString());
+            }
+        }
         private void FollowSize()
         {
             OpenButton.Width = this.Width - 24;
@@ -54,6 +112,9 @@ namespace _6
             //listBox1.Height = this.Height - 150;
             this.KeyPreview = true;
             MenuPanel.Visible = false;
+            this.songerTableAdapter.Fill(this.audio_libDataSet.Songer);
+            con.ConnectionString = @"Data Source=.;Initial Catalog=Audio_lib; Integrated Security=true";
+            con.Open();
 
         }
 
@@ -67,9 +128,10 @@ namespace _6
 
         private void Open_Click(object sender, EventArgs e)
         {
+            MenuPanel.Visible = false;
             OpenFileDialog open = new OpenFileDialog();
             DialogResult dr = this.OpenFile.ShowDialog();
-            if (dr == System.Windows.Forms.DialogResult.OK)
+            if (dr == DialogResult.OK)
             {
                 try
                 {
@@ -95,56 +157,9 @@ namespace _6
             }
         }
 
-        private void listBox1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            if (PlayListComponent.Items.Count > 0)
-            {
-                nowplaying = PlayListComponent.SelectedIndex;
-                WaveStream pcm = WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(playList[(string)PlayListComponent.SelectedItem]));
-                stream = new BlockAlignReductionStream(pcm);
-                if (output == null)
-                    output = new DirectSoundOut();
-                output.Init(stream);
-                output.Play();
-                var mp3File = TagLib.File.Create(playList[(string)PlayListComponent.SelectedItem]);
-                InformationAboutSong.Text = String.Join(",", mp3File.Tag.Performers) + " - " + mp3File.Tag.Title + " \r(" + mp3File.Tag.Album + ", " + mp3File.Tag.Year + ")            " + mp3File.Properties.Duration.ToString("mm\\:ss");//+" "+mp3File.Tag.FirstGenre;
-                TIMER.Interval = (mp3File.Properties.Duration.Seconds + mp3File.Properties.Duration.Minutes * 60 + mp3File.Properties.Duration.Hours * 3600) * 1000;
-            }
-            else
-            {
-                Open_Click(sender, e);
-            }
-        }
-
-        private void listBox1_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (PlayListComponent.Items.Count > 0)
-            {
-                if (e.KeyCode == Keys.Enter)
-                {
-                    nowplaying = PlayListComponent.SelectedIndex;
-                    WaveStream pcm = WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(playList[(string)PlayListComponent.SelectedItem]));
-                    stream = new BlockAlignReductionStream(pcm);
-                    if (output == null)
-                        output = new DirectSoundOut();
-                    output.Init(stream);
-                    output.Play();
-                    var mp3File = TagLib.File.Create(playList[(string)PlayListComponent.SelectedItem]);
-                    InformationAboutSong.Text = String.Join(",", mp3File.Tag.Performers) + " - " + mp3File.Tag.Title + " \r(" + mp3File.Tag.Album + ", " + mp3File.Tag.Year + ")            " + mp3File.Properties.Duration.ToString("mm\\:ss");//+" "+mp3File.Tag.FirstGenre;
-                    TIMER.Interval = (mp3File.Properties.Duration.Seconds + mp3File.Properties.Duration.Minutes * 60 + mp3File.Properties.Duration.Hours * 3600) * 1000;
-                }
-                if (e.KeyCode == Keys.Delete)
-                {
-                    index = PlayListComponent.SelectedIndex;
-                    PlayListComponent.Items.RemoveAt(PlayListComponent.SelectedIndex);
-                    PlayListComponent.SelectedIndex = index;
-                }
-            }
-        }
-
         private void Next_Click(object sender, EventArgs e)
         {
-           
+            MenuPanel.Visible = false;
             if (PlayListComponent.Items.Count > 0)
             {
                 if (PlayListComponent.SelectedIndex != PlayListComponent.Items.Count - 1)
@@ -157,14 +172,18 @@ namespace _6
                         stream = new BlockAlignReductionStream(pcm);
                         if (output == null)
                             output = new DirectSoundOut();
+
                         output.Init(stream);
                         output.Play();
+                        AddToDb();
                     }
                 }
                 else
                 {
-                    PlayListComponent.SetSelected(0, true);
-                    listBox1_MouseDoubleClick(sender, (MouseEventArgs)e);
+                    PlayListComponent.SetSelected(PlayListComponent.Items.Count-PlayListComponent.Items.Count, true);
+                    //PlayListComponent_MouseDoubleClick(sender, (MouseEventArgs)e);
+                    KeyEventArgs kea= new KeyEventArgs(Keys.Enter);
+                    PlayListComponent_KeyDown(sender, kea);
                 }
                 if (output != null)
                 {
@@ -177,7 +196,7 @@ namespace _6
 
         private void Previous_Click(object sender, EventArgs e)
         {
-          
+            MenuPanel.Visible = false;
             if (PlayListComponent.Items.Count > 0)
             {
                 if (PlayListComponent.SelectedIndex > 0)
@@ -192,12 +211,13 @@ namespace _6
                             output = new DirectSoundOut();
                         output.Init(stream);
                         output.Play();
+                        AddToDb();
                     }
                 }
                 else
                 {
                     PlayListComponent.SetSelected(PlayListComponent.Items.Count - 1, true);
-                    listBox1_MouseDoubleClick(sender, (MouseEventArgs)e);
+                    PlayListComponent_MouseDoubleClick(sender, (MouseEventArgs)e);
                 }
                 if (output != null)
                 {
@@ -210,6 +230,7 @@ namespace _6
 
         private void PlayPause_Click(object sender, EventArgs e)
         {
+            MenuPanel.Visible = false;
             if (output != null)
             {
                 var mp3File = TagLib.File.Create(playList[(string)PlayListComponent.SelectedItem]);
@@ -218,11 +239,6 @@ namespace _6
                 if (output.PlaybackState == PlaybackState.Playing) { output.Pause(); TIMER.Enabled = false; }
                 else if (output.PlaybackState == PlaybackState.Paused) { output.Play(); TIMER.Enabled = true; }
             }
-        }
-
-        private void timer1_Tick(object sender, EventArgs e)
-        {
-            Next_Click(sender, e);
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
@@ -246,6 +262,8 @@ namespace _6
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
+            if (output!=null)
+            output.Dispose();
             this.Close();
         }
 
@@ -291,9 +309,64 @@ namespace _6
             DataBase.Show();
         }
 
+        private void PlayListComponent_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (PlayListComponent.Items.Count > 0)
+            {
+                if (e.KeyCode == Keys.Enter)
+                {
+                    nowplaying = PlayListComponent.SelectedIndex;
+                    WaveStream pcm = WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(playList[(string)PlayListComponent.SelectedItem]));
+                    stream = new BlockAlignReductionStream(pcm);
+                    if (output == null)
+                        output = new DirectSoundOut();
+                    output.Init(stream);
+                    output.Play();
+                    var mp3File = TagLib.File.Create(playList[(string)PlayListComponent.SelectedItem]);
+                    InformationAboutSong.Text = String.Join(",", mp3File.Tag.Performers) + " - " + mp3File.Tag.Title + " \r(" + mp3File.Tag.Album + ", " + mp3File.Tag.Year + ")            " + mp3File.Properties.Duration.ToString("mm\\:ss");//+" "+mp3File.Tag.FirstGenre;
+                    TIMER.Interval = (mp3File.Properties.Duration.Seconds + mp3File.Properties.Duration.Minutes * 60 + mp3File.Properties.Duration.Hours * 3600) * 1000;
+                    AddToDb();
+                }
+                if (e.KeyCode == Keys.Delete)
+                {
+                    index = PlayListComponent.SelectedIndex;
+                    PlayListComponent.Items.RemoveAt(PlayListComponent.SelectedIndex);
+                    PlayListComponent.SelectedIndex = index;
+                }
+            }
+        }
+
+        private void PlayListComponent_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            MenuPanel.Visible = false;
+            if (PlayListComponent.Items.Count > 0 && PlayListComponent.SelectedIndex>=0)
+            {
+                nowplaying = PlayListComponent.SelectedIndex;
+                WaveStream pcm = WaveFormatConversionStream.CreatePcmStream(new Mp3FileReader(playList[(string)PlayListComponent.SelectedItem]));
+                stream = new BlockAlignReductionStream(pcm);
+                if (output == null)
+                    output = new DirectSoundOut();
+                output.Init(stream);
+                output.Play();
+                var mp3File = TagLib.File.Create(playList[(string)PlayListComponent.SelectedItem]);
+                InformationAboutSong.Text = String.Join(",", mp3File.Tag.Performers) + " - " + mp3File.Tag.Title + " \r(" + mp3File.Tag.Album + ", " + mp3File.Tag.Year + ")            " + mp3File.Properties.Duration.ToString("mm\\:ss");//+" "+mp3File.Tag.FirstGenre;
+                TIMER.Interval = (mp3File.Properties.Duration.Seconds + mp3File.Properties.Duration.Minutes * 60 + mp3File.Properties.Duration.Hours * 3600) * 1000;
+                AddToDb();
+            }
+            else if (PlayListComponent.Items.Count<=0)
+            {
+                Open_Click(sender, e);
+            }
+        }
+
+        private void TIMER_Tick(object sender, EventArgs e)
+        {
+            Next_Click(sender, e);
+        }
+
         private void panel1_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
                 this.Location = new System.Drawing.Point(this.Location.X + (e.X - x), this.Location.Y + (e.Y - y));
             }

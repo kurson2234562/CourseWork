@@ -46,11 +46,19 @@
             this.PlayPauseButton = new System.Windows.Forms.Button();
             this.OpenButton = new System.Windows.Forms.Button();
             this.MovePanel = new System.Windows.Forms.Panel();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.OpenFile = new System.Windows.Forms.OpenFileDialog();
             this.TIMER = new System.Windows.Forms.Timer(this.components);
             this.FolderBrowser = new System.Windows.Forms.FolderBrowserDialog();
+            this.audio_libDataSet = new _6.Audio_libDataSet();
+            this.audiolibDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.songerTableAdapter = new _6.Audio_libDataSetTableAdapters.SongerTableAdapter();
             this.ResizePanel.SuspendLayout();
             this.MenuPanel.SuspendLayout();
+            this.MovePanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.audio_libDataSet)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.audiolibDataSetBindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // ResizePanel
@@ -242,7 +250,8 @@
             this.PlayListComponent.Name = "PlayListComponent";
             this.PlayListComponent.Size = new System.Drawing.Size(308, 435);
             this.PlayListComponent.TabIndex = 17;
-            this.PlayListComponent.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox1_MouseDoubleClick);
+            this.PlayListComponent.KeyDown += new System.Windows.Forms.KeyEventHandler(this.PlayListComponent_KeyDown);
+            this.PlayListComponent.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.PlayListComponent_MouseDoubleClick);
             // 
             // InformationAboutSong
             // 
@@ -290,12 +299,22 @@
             this.MovePanel.AccessibleRole = System.Windows.Forms.AccessibleRole.Border;
             this.MovePanel.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.MovePanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.MovePanel.Controls.Add(this.dataGridView1);
             this.MovePanel.Location = new System.Drawing.Point(12, 0);
             this.MovePanel.Name = "MovePanel";
             this.MovePanel.Size = new System.Drawing.Size(308, 119);
             this.MovePanel.TabIndex = 19;
             this.MovePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             this.MovePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseMove);
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Location = new System.Drawing.Point(104, 6);
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.Size = new System.Drawing.Size(13, 17);
+            this.dataGridView1.TabIndex = 0;
+            this.dataGridView1.Visible = false;
             // 
             // OpenFile
             // 
@@ -304,11 +323,26 @@
             // TIMER
             // 
             this.TIMER.Interval = 1000000000;
+            this.TIMER.Tick += new System.EventHandler(this.TIMER_Tick);
             // 
             // FolderBrowser
             // 
             this.FolderBrowser.Description = "Выбор папки";
             this.FolderBrowser.RootFolder = System.Environment.SpecialFolder.MyComputer;
+            // 
+            // audio_libDataSet
+            // 
+            this.audio_libDataSet.DataSetName = "Audio_libDataSet";
+            this.audio_libDataSet.SchemaSerializationMode = System.Data.SchemaSerializationMode.IncludeSchema;
+            // 
+            // audiolibDataSetBindingSource
+            // 
+            this.audiolibDataSetBindingSource.DataSource = this.audio_libDataSet;
+            this.audiolibDataSetBindingSource.Position = 0;
+            // 
+            // songerTableAdapter
+            // 
+            this.songerTableAdapter.ClearBeforeFill = true;
             // 
             // Application
             // 
@@ -332,6 +366,10 @@
             this.ResizePanel.ResumeLayout(false);
             this.ResizePanel.PerformLayout();
             this.MenuPanel.ResumeLayout(false);
+            this.MovePanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.audio_libDataSet)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.audiolibDataSetBindingSource)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -357,6 +395,10 @@
         private System.Windows.Forms.Button DataBaseButton;
         private System.Windows.Forms.Button MinimizeButton;
         private System.Windows.Forms.Button MaximizeButton;
+        private System.Windows.Forms.DataGridView dataGridView1;
+        private Audio_libDataSet audio_libDataSet;
+        private System.Windows.Forms.BindingSource audiolibDataSetBindingSource;
+        private Audio_libDataSetTableAdapters.SongerTableAdapter songerTableAdapter;
     }
 }
 
