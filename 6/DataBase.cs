@@ -22,7 +22,6 @@ namespace _6
         {
             this.songerTableAdapter.Fill(this.audio_libDataSet.Songer);
             con.ConnectionString = @"Data Source=.;Initial Catalog=Audio_lib; Integrated Security=true";
-            comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             bs1.DataSource = dt;
             bindingNavigator1.BindingSource = bs1;
             dataGridView1.DataSource = bs1;

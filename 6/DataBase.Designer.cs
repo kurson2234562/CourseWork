@@ -245,16 +245,17 @@
             // 
             // comboBox1
             // 
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
-            "Songer",
-            "Genre",
-            "Song",
             "Album_Info",
             "Composition_Album",
-            "Listening",
+            "Genre",
             "Groups",
-            "Participation"});
+            "Listening",
+            "Participation",
+            "Song",
+            "Songer"});
             this.comboBox1.Location = new System.Drawing.Point(141, 269);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(159, 21);

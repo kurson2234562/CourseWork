@@ -44,7 +44,6 @@ namespace _6
             this.songerTableAdapter.Fill(this.audio_libDataSet.Songer);
             con.ConnectionString = @"Data Source=.;Initial Catalog=Audio_lib; Integrated Security=true";
             con.Open();
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
             ShowButton.Enabled = false;
         }
 
@@ -113,8 +112,6 @@ namespace _6
                 comboBox3.Enabled = true;
                 comboBox2.Items.Clear();
                 comboBox3.Items.Clear();
-                comboBox2.DropDownStyle = ComboBoxStyle.DropDownList;
-                comboBox3.DropDownStyle = ComboBoxStyle.DropDownList;
                 if (dt.Rows.Count > 0)
                 {
                     for (i = 0; i < dt.Rows.Count; i++)
