@@ -10,7 +10,6 @@ namespace _6
 
         SqlDataAdapter sda;
         BindingSource bs1 = new BindingSource();
-        //SqlCommandBuilder scb;
         DataTable dt;
         SqlConnection con = new SqlConnection();
         public DataBase()
@@ -23,7 +22,6 @@ namespace _6
             this.songerTableAdapter.Fill(this.audio_libDataSet.Songer);
             con.ConnectionString = @"Data Source=.;Initial Catalog=Audio_lib; Integrated Security=true";
             bs1.DataSource = dt;
-            bindingNavigator1.BindingSource = bs1;
             dataGridView1.DataSource = bs1;
         }
 
@@ -61,6 +59,16 @@ namespace _6
         {
             TextBox txt = (TextBox)e.Control;
             txt.ReadOnly = true;
+        }
+
+        private void CloseButton_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void MinimizeButton_Click(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
         }
     }
 }

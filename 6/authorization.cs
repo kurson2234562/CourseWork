@@ -12,10 +12,13 @@ namespace _6
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if((textBox1.Text=="admin") && (textBox2.Text == "admin"))
+            bool admin = false;
+            if((textBox1.Text=="admin") && (maskedTextBox1.Text == "admin"))
             {
-                ;
+                admin = true;
             }
+            Form DataBase = new DataBase();
+            DataBase.Show();
         }
     }
 }

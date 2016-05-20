@@ -28,184 +28,185 @@ namespace _6
 
         void AddToDb()
         {
-            bool add = true;
-            int idGenre = 0, idSonger = 0, idSong = 0;
-            string songer = "", song = "", genre = "", album="";
-            SqlDataAdapter sdaSonger, sdaSong, sdaGenre, sdaAlbum,sdaListening;
-            DataTable dtSonger, dtSong, dtGenre, dtAlbum,dtListening;
-            int posSonger = 0, posGenre = 0, posSong = 0, posAlbum = 0;
             var mp3File = TagLib.File.Create(playList[(string)PlayListComponent.SelectedItem]);
-            sdaSonger = new SqlDataAdapter(@"Select * From Songer ORDER BY 1", con);
-            sdaGenre = new SqlDataAdapter(@"Select * From Genre ORDER BY 1",con);
-            sdaSong = new SqlDataAdapter(@"Select * From Song ORDER BY 1", con);
-            sdaAlbum = new SqlDataAdapter(@"Select * From Album_info ORDER BY 1", con);
-            sdaListening = new SqlDataAdapter(@"Select * From Listening ORDER BY 1", con);
-            dtSonger = new DataTable();
-            dtGenre = new DataTable();
-            dtSong = new DataTable();
-            dtAlbum = new DataTable();
-            dtListening = new DataTable();
-            sdaSonger.Fill(dtSonger);
-            sdaGenre.Fill(dtGenre);
-            sdaSong.Fill(dtSong);
-            sdaAlbum.Fill(dtAlbum);
-            sdaListening.Fill(dtListening);
-            dataGridView1.DataSource = dtSonger;
-            int cntSonger = dtSonger.Rows.Count;
-            /******************************************************Songer*************************************************************/
-            for (int i = 0; i < cntSonger; i++)
+            if (mp3File.Tag.Title != "" && String.Join(",", mp3File.Tag.Performers) != "")
             {
-                songer = dtSonger.Rows[i].Field<string>("FIO");
+                bool add = true;
+                int idGenre = 0, idSonger = 0, idSong = 0;
+                string songer = "", song = "", genre = "", album = "";
+                SqlDataAdapter sdaSonger, sdaSong, sdaGenre, sdaAlbum, sdaListening;
+                DataTable dtSonger, dtSong, dtGenre, dtAlbum, dtListening;
+                int posSonger = 0, posGenre = 0, posSong = 0, posAlbum = 0;
                 sdaSonger = new SqlDataAdapter(@"Select * From Songer ORDER BY 1", con);
+                sdaGenre = new SqlDataAdapter(@"Select * From Genre ORDER BY 1", con);
+                sdaSong = new SqlDataAdapter(@"Select * From Song ORDER BY 1", con);
+                sdaAlbum = new SqlDataAdapter(@"Select * From Album_info ORDER BY 1", con);
+                sdaListening = new SqlDataAdapter(@"Select * From Listening ORDER BY 1", con);
                 dtSonger = new DataTable();
+                dtGenre = new DataTable();
+                dtSong = new DataTable();
+                dtAlbum = new DataTable();
+                dtListening = new DataTable();
                 sdaSonger.Fill(dtSonger);
-                if (songer.ToUpper() == String.Join(",", mp3File.Tag.Performers).ToUpper())
-                {
-                    add = false;
-                    posSonger = i;
-                }
-            }
-            if (add)
-            {
-                sdaSonger = new SqlDataAdapter(@"Insert INTO Songer(FIO) Values ('" + String.Join(",", mp3File.Tag.Performers) + "')", con);
-                dtSonger = new DataTable();
-                sdaSonger.Fill(dtSonger);
+                sdaGenre.Fill(dtGenre);
+                sdaSong.Fill(dtSong);
+                sdaAlbum.Fill(dtAlbum);
+                sdaListening.Fill(dtListening);
                 dataGridView1.DataSource = dtSonger;
-            }
-            for (int i = 0; i < cntSonger; i++)
-            {
-                songer = dtSonger.Rows[i].Field<string>("FIO");
+                int cntSonger = dtSonger.Rows.Count;
+                /******************************************************Songer*************************************************************/
+                for (int i = 0; i < cntSonger; i++)
+                {
+                    songer = dtSonger.Rows[i].Field<string>("FIO");
+                    sdaSonger = new SqlDataAdapter(@"Select * From Songer ORDER BY 1", con);
+                    dtSonger = new DataTable();
+                    sdaSonger.Fill(dtSonger);
+                    if (songer.ToUpper() == String.Join(",", mp3File.Tag.Performers).ToUpper())
+                    {
+                        add = false;
+                        posSonger = i;
+                    }
+                }
+                if (add)
+                {
+                    sdaSonger = new SqlDataAdapter(@"Insert INTO Songer(FIO) Values ('" + String.Join(",", mp3File.Tag.Performers) + "')", con);
+                    dtSonger = new DataTable();
+                    sdaSonger.Fill(dtSonger);
+                    dataGridView1.DataSource = dtSonger;
+                }
                 sdaSonger = new SqlDataAdapter(@"Select * From Songer ORDER BY 1", con);
                 dtSonger = new DataTable();
                 sdaSonger.Fill(dtSonger);
-                if (songer.ToUpper() == String.Join(",", mp3File.Tag.Performers).ToUpper())
+                cntSonger = dtSonger.Rows.Count;
+                for (int i = 0; i < cntSonger; i++)
                 {
-                    add = false;
-                    posSonger = i;
+                    songer = dtSonger.Rows[i].Field<string>("FIO");
+                    
+                    if (songer.ToUpper() == String.Join(",", mp3File.Tag.Performers).ToUpper())
+                    {
+                        add = false;
+                        posSonger = i;
+                    }
                 }
-            }
-            if (posSonger > 0)
-            {
-                idSonger = dtSonger.Rows[posSonger].Field<int>("ID_Songer");
-            }
-            sdaSonger = new SqlDataAdapter(@"Select * From Songer ORDER BY 1", con);
-            dtSonger = new DataTable();
-            sdaSonger.Fill(dtSonger);
-            /******************************************************Genre*************************************************************/
-            add = true;
-            int cntGenre = dtGenre.Rows.Count;
-            for (int i = 0; i < cntGenre; i++)
-            {
-                genre = dtGenre.Rows[i].Field<string>("Name_genre");
-                sdaGenre = new SqlDataAdapter(@"Select * From Genre ORDER BY 1", con);
-                dtGenre = new DataTable();
-                sdaGenre.Fill(dtGenre);
-                if (genre.ToUpper() == mp3File.Tag.FirstGenre.ToUpper() || genre == "")
+                if (posSonger > 0)
                 {
-                    add = false;
-                    posGenre = i;
+                    idSonger = dtSonger.Rows[posSonger].Field<int>("ID_Songer");
                 }
-            }
-            if (add)
-            {
-                sdaGenre = new SqlDataAdapter(@"Insert INTO Genre(Name_genre) Values ('" + mp3File.Tag.FirstGenre + "')", con);
-                dtGenre = new DataTable();
-                sdaGenre.Fill(dtGenre);
-                sdaGenre.Update(dtGenre);
-                dataGridView1.DataSource = dtGenre;
-            }
-            for (int i = 0; i < cntGenre; i++)
-            {
-                sdaGenre = new SqlDataAdapter(@"Select * From Genre ORDER BY 1", con);
-                dtGenre = new DataTable();
-                sdaGenre.Fill(dtGenre);
-                genre = dtGenre.Rows[i].Field<string>("Name_genre");
-                sdaGenre = new SqlDataAdapter(@"Select * From Genre ORDER BY 1", con);
-                dtGenre = new DataTable();
-                sdaGenre.Fill(dtGenre);
-                if (genre == mp3File.Tag.FirstGenre || genre == "")
+                sdaSonger = new SqlDataAdapter(@"Select * From Songer ORDER BY 1", con);
+                dtSonger = new DataTable();
+                sdaSonger.Fill(dtSonger);
+                /******************************************************Genre*************************************************************/
+                add = true;
+                int cntGenre = dtGenre.Rows.Count;
+                for (int i = 0; i < cntGenre; i++)
                 {
-                    posGenre = i;
+                    genre = dtGenre.Rows[i].Field<string>("Name_genre");
+                    sdaGenre = new SqlDataAdapter(@"Select * From Genre ORDER BY 1", con);
+                    dtGenre = new DataTable();
+                    sdaGenre.Fill(dtGenre);
+                    if ((genre.ToUpper() == mp3File.Tag.FirstGenre.ToUpper()) || genre == "")
+                    {
+                        add = false;
+                        posGenre = i;
+                    }
                 }
-            }
-            sdaGenre = new SqlDataAdapter(@"Select * From Genre ORDER BY 1", con);
-            dtGenre = new DataTable();
-            sdaGenre.Fill(dtGenre);
-            if (posGenre > 0)
-            {
-                idGenre = dtGenre.Rows[posGenre].Field<int>("ID_Genre");
-            }
-            /******************************************************Song*************************************************************/
-            int cntSong = dtSong.Rows.Count;
-            add = true;
-            for (int i = 0; i < cntSong; i++)
-            {
-                song = dtSong.Rows[i].Field<string>("Name_song");
+                if (add)
+                {
+                    sdaGenre = new SqlDataAdapter(@"Insert INTO Genre(Name_genre) Values ('" + mp3File.Tag.FirstGenre + "')", con);
+                    dtGenre = new DataTable();
+                    sdaGenre.Fill(dtGenre);
+                    sdaGenre.Update(dtGenre);
+                    dataGridView1.DataSource = dtGenre;
+                }
+                for (int i = 0; i < cntGenre; i++)
+                {
+                    sdaGenre = new SqlDataAdapter(@"Select * From Genre ORDER BY 1", con);
+                    dtGenre = new DataTable();
+                    sdaGenre.Fill(dtGenre);
+                    cntGenre = dtGenre.Rows.Count;
+                    genre = dtGenre.Rows[i].Field<string>("Name_genre");
+                    if (genre == mp3File.Tag.FirstGenre || genre == "")
+                    {
+                        posGenre = i;
+                    }
+                }
+                if (posGenre > 0)
+                {
+                    idGenre = dtGenre.Rows[posGenre].Field<int>("ID_Genre");
+                }
+                /******************************************************Song*************************************************************/
+                int cntSong = dtSong.Rows.Count;
+                add = true;
+                for (int i = 0; i < cntSong; i++)
+                {
+                    song = dtSong.Rows[i].Field<string>("Name_song");
+                    sdaSong = new SqlDataAdapter(@"Select * From Song ORDER BY 1", con);
+                    dtSong = new DataTable();
+                    sdaSong.Fill(dtSong);
+                    if (song == mp3File.Tag.Title || song == "")
+                    {
+                        add = false;
+                        posSong = i;
+                    }
+                }
+
+                if (add)
+                {
+                    sdaSong = new SqlDataAdapter(@"Insert INTO Song(Name_song, Duration, ID_Genre) Values ('" + mp3File.Tag.Title + "','" + mp3File.Properties.Duration.Hours + ":" + mp3File.Properties.Duration.Minutes + ":" + mp3File.Properties.Duration.Seconds + "'," + idGenre + ")", con);
+                    MessageBox.Show("Insert INTO Song(Name_song, Duration, ID_Genre) Values ('" + mp3File.Tag.Title + "','" + mp3File.Properties.Duration.Hours + ":" + mp3File.Properties.Duration.Minutes + ":" + mp3File.Properties.Duration.Seconds + "'," + idGenre + ")");
+                    dtSong = new DataTable();
+                    sdaSong.Fill(dtSong);
+                    sdaSong.Update(dtSong);
+                    dataGridView1.DataSource = dtSong;
+                }
                 sdaSong = new SqlDataAdapter(@"Select * From Song ORDER BY 1", con);
                 dtSong = new DataTable();
                 sdaSong.Fill(dtSong);
-                if (song == mp3File.Tag.Title || song == "")
+                cntSong = dtSong.Rows.Count;
+                for (int i = 0; i < cntSong; i++)
                 {
-                    add = false;
-                    posSong = i;
+                    song = dtSong.Rows[i].Field<string>("Name_song");
+                    if (song == mp3File.Tag.Title || song == "")
+                    {
+                        add = false;
+                        posSong = i;
+                    }
                 }
-            }
+                if (posSong > 0)
+                {
+                    idSong = dtSong.Rows[posSong].Field<int>("ID_Song");
+                }
+                /******************************************************Album*************************************************************/
+                int cntAlbum = dtAlbum.Rows.Count;
+                add = true;
+                for (int i = 0; i < cntAlbum; i++)
+                {
+                    album = dtAlbum.Rows[i].Field<string>("Name_album");
+                    sdaAlbum = new SqlDataAdapter(@"Select * From Album_info ORDER BY 1", con);
+                    dtAlbum = new DataTable();
+                    sdaAlbum.Fill(dtAlbum);
+                    if (album == mp3File.Tag.Album || album == "")
+                    {
+                        add = false;
+                        posAlbum = i;
+                    }
+                }
+                if (add)
+                {
+                    sdaAlbum = new SqlDataAdapter(@"Insert INTO Album_info(Name_album, Year_of_issue, ID_Songer) Values ('" + mp3File.Tag.Album + "','" + mp3File.Tag.Year + "'," + idSonger + ")", con);
+                    dtAlbum = new DataTable();
+                    sdaAlbum.Fill(dtAlbum);
+                    sdaAlbum.Update(dtAlbum);
+                    dataGridView1.DataSource = dtAlbum;
+                }
 
-            if (add)
-            {
-                sdaSong = new SqlDataAdapter(@"Insert INTO Song(Name_song, Duration, ID_Genre) Values ('" + mp3File.Tag.Title + "','" + mp3File.Properties.Duration.Hours + ":" + mp3File.Properties.Duration.Minutes + ":" + mp3File.Properties.Duration.Seconds + "'," + idGenre + ")", con);
-                dtSong = new DataTable();
-                sdaSong.Fill(dtSong);
-                sdaSong.Update(dtSong);
-                dataGridView1.DataSource = dtSong;
+                /******************************************************Listening************************************************************/
+                sdaListening = new SqlDataAdapter(@"Insert INTO Listening(ID_Song, ID_Songer, DateTime_Listening) Values (" + idSong + "," + idSonger + ",'" + DateTime.Now + "')", con);
+                dtListening = new DataTable();
+                sdaListening.Fill(dtListening);
+                sdaListening.Update(dtListening);
+                dataGridView1.DataSource = dtListening;
             }
-            sdaSong = new SqlDataAdapter(@"Select * From Song ORDER BY 1", con);
-            dtSong = new DataTable();
-            sdaSong.Fill(dtSong);
-            cntSong = dtSong.Rows.Count;
-            for (int i = 0; i < cntSong; i++)
-            {
-                song = dtSong.Rows[i].Field<string>("Name_song");
-                if (song == mp3File.Tag.Title || song == "")
-                {
-                    add = false;
-                    posSong = i;
-                }
-            }
-            if (posSong> 0)
-            {
-                idSong = dtSong.Rows[posSong].Field<int>("ID_Song");
-            }
-            /******************************************************Album*************************************************************/
-            int cntAlbum = dtAlbum.Rows.Count;
-            add = true;
-            for (int i = 0; i < cntAlbum; i++)
-            {
-                album = dtAlbum.Rows[i].Field<string>("Name_album");
-                sdaAlbum = new SqlDataAdapter(@"Select * From Album_info ORDER BY 1", con);
-                dtAlbum = new DataTable();
-                sdaAlbum.Fill(dtAlbum);
-                if (album == mp3File.Tag.Album || album == "")
-                {
-                    add = false;
-                    posAlbum = i;
-                }
-            }
-            if (add)
-            {
-                sdaAlbum = new SqlDataAdapter(@"Insert INTO Album_info(Name_album, Year_of_issue, ID_Songer) Values ('" + mp3File.Tag.Album + "','" + mp3File.Tag.Year + "'," + idSonger + ")", con);
-                dtAlbum = new DataTable();
-                sdaAlbum.Fill(dtAlbum);
-                sdaAlbum.Update(dtAlbum);
-                dataGridView1.DataSource = dtAlbum;
-            }
-
-            /******************************************************Listening************************************************************/
-            sdaListening = new SqlDataAdapter(@"Insert INTO Listening(ID_Song, ID_Songer, DateTime_Listening) Values (" + idSong+ "," + idSonger + ",'" + DateTime.Now + "')", con);
-            dtListening = new DataTable();
-            sdaListening.Fill(dtListening);
-            sdaListening.Update(dtListening);
-            dataGridView1.DataSource = dtListening;
         }
         private void FollowSize()
         {
@@ -444,8 +445,8 @@ namespace _6
 
         private void DataBaseButton_Click(object sender, EventArgs e)
         {
-            Form DataBase = new DataBase();
-            DataBase.Show();
+            authorization authorization = new authorization();
+            authorization.Show();
         }
 
         private void PlayListComponent_KeyDown(object sender, KeyEventArgs e)

@@ -405,10 +405,9 @@ namespace _6
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void MinimizeButton_Click(object sender, EventArgs e)
         {
-            authorization authorization = new authorization();
-            authorization.Show();
+            this.WindowState = FormWindowState.Minimized;
         }
 
         private void ChangeDatabase_MouseDown(object sender, MouseEventArgs e)
