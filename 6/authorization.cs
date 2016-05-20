@@ -5,6 +5,7 @@ namespace _6
 {
     public partial class authorization : Form
     {
+        public bool admin;
         public authorization()
         {
             InitializeComponent();
@@ -12,13 +13,15 @@ namespace _6
 
         private void button1_Click(object sender, EventArgs e)
         {
-            bool admin = false;
+            admin = false;
             if((textBox1.Text=="admin") && (maskedTextBox1.Text == "admin"))
             {
                 admin = true;
             }
             Form DataBase = new DataBase();
+            DataBase.Owner = this;
             DataBase.Show();
+            this.Hide();
         }
     }
 }

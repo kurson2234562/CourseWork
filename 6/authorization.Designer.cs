@@ -53,9 +53,10 @@
             // 
             this.maskedTextBox1.Location = new System.Drawing.Point(24, 75);
             this.maskedTextBox1.Name = "maskedTextBox1";
-            this.maskedTextBox1.PasswordChar = '*';
+            this.maskedTextBox1.PasswordChar = '%';
             this.maskedTextBox1.Size = new System.Drawing.Size(175, 20);
             this.maskedTextBox1.TabIndex = 1;
+            this.maskedTextBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // button1
             // 
@@ -76,6 +77,7 @@
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(175, 20);
             this.textBox1.TabIndex = 0;
+            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // authorization
             // 

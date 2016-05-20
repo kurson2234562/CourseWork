@@ -7,8 +7,8 @@ namespace _6
 {
     public partial class DataBase : Form
     {
-
         SqlDataAdapter sda;
+        public bool adminthis;     
         BindingSource bs1 = new BindingSource();
         DataTable dt;
         SqlConnection con = new SqlConnection();
@@ -23,6 +23,16 @@ namespace _6
             con.ConnectionString = @"Data Source=.;Initial Catalog=Audio_lib; Integrated Security=true";
             bs1.DataSource = dt;
             dataGridView1.DataSource = bs1;
+            button3.Visible = true;
+            authorization main = this.Owner as authorization;
+            if (main != null)
+            {
+                adminthis = main.admin;
+            }
+            if (!adminthis)
+            {
+                button3.Visible = false;
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -69,6 +79,12 @@ namespace _6
         private void MinimizeButton_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            Queries form = new Queries();
+            form.Show();
         }
     }
 }
