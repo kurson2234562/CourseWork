@@ -26,21 +26,22 @@ namespace _6
         string ChangeString(string str)
         {
             int i = 0, I = 0;
-            while (i < str.Length)
-            {
-                if (str[i] == '\'')
+            if (str != "")
+                while (i < str.Length)
                 {
-                    I++;
-                    if (i == 0)
-                        str = "\'\'" + str.Substring(i + 1, str.Length - I);
-                    if (i > 0 && i != str.Length - 1)
-                        str= str.Substring(0, i) + "\'\'" + str.Substring(i + 1, str.Length - (I * 2));
-                    if (i == str.Length - 1)
-                        str = str.Substring(0, i) + "\'\'";
+                    if (str[i] == '\'')
+                    {
+                        I++;
+                        if (i == 0)
+                            str = "\'\'" + str.Substring(i + 1, str.Length - I);
+                        if (i > 0 && i != str.Length - 1)
+                            str = str.Substring(0, i) + "\'\'" + str.Substring(i + 1, str.Length - (I * 2));
+                        if (i == str.Length - 1)
+                            str = str.Substring(0, i) + "\'\'";
+                        i++;
+                    }
                     i++;
                 }
-                i++;
-            }
             return str;
         }
 
@@ -77,9 +78,6 @@ namespace _6
                 sdaComposition.Fill(dtComposition);
                 dataGridView1.DataSource = dtSonger;
                 int cntSonger = dtSonger.Rows.Count;
-                namesonger = ChangeString(namesonger);
-                mp3File.Tag.Album = ChangeString(mp3File.Tag.Album);
-                mp3File.Tag.Title = ChangeString(mp3File.Tag.Title);
                 /******************************************************Songer*************************************************************/
                 for (int i = 0; i < cntSonger; i++)
                 {
