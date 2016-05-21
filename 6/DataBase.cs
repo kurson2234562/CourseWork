@@ -52,6 +52,13 @@ namespace _6
                 sda.Fill(dt);
                 dataGridView1.DataSource = dt;
             }
+            if (comboBox1.SelectedItem.ToString() == "Genre")
+            {
+                sda = new SqlDataAdapter(@"Select * From Genre ORDER BY ID_Genre", con);
+                dt = new DataTable();
+                sda.Fill(dt);
+                dataGridView1.DataSource = dt;
+            }
             dataGridView1.Width = dataGridView1.Columns.Count * dataGridView1.Columns[1].Width+50;
             if(dataGridView1.Columns.Count * dataGridView1.Columns[1].Width + 50 > 430)
             this.Width = dataGridView1.Columns.Count * dataGridView1.Columns[1].Width+75;

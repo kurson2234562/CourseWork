@@ -177,16 +177,93 @@ namespace _6
 
         private void InsertButton_Click(object sender, EventArgs e)
         {
+            int C = 0, I = 0;
+            while (C < textBox2.Text.Length)
+            {
+                if (textBox2.Text[C] == '\'')
+                {
+                    I++;
+                    if (C == 0)
+                        textBox2.Text = "\'\'" + textBox2.Text.Substring(C + 1, textBox2.Text.Length - I);
+                    if (C > 0 && C != textBox2.Text.Length - 1)
+                        textBox2.Text = textBox2.Text.Substring(0, C) + "\'\'" + textBox2.Text.Substring(C + 1, textBox2.Text.Length - (I * 2));
+                    if (C == textBox2.Text.Length - 1)
+                        textBox2.Text = textBox2.Text.Substring(0, C) + "\'\'";
+                    C++;
+                }
+                C++;
+            }
+            int CNT = 0, get = 0,get1=0;
+            DateTime get2;
+            bool add = false, dadd = true;
             switch (comboBox1.SelectedItem.ToString())
             {
                 case "Album_Info":
                     if ((textBox2.Text != "") && (textBox3.Text != "") && (textBox4.Text != ""))
-                        sda = new SqlDataAdapter(@"Insert Into Album_Info Values('" + textBox2.Text + "','" + textBox3.Text + "'," + textBox4.Text + ")", con);
+                    {
+                        sda = new SqlDataAdapter(@"Select * From Songer", con);
+                        dt = new DataTable();
+                        sda.Fill(dt);
+                        CNT = dt.Rows.Count;
+                        for (int j=0;j< CNT; j++)
+                        {
+                            get = dt.Rows[j].Field <int> ("ID_Songer");
+                            if (get.ToString() == textBox4.Text.ToString())
+                                add = false;
+                        }
+                        if (!add)
+                            sda = new SqlDataAdapter(@"Insert Into Album_Info Values('" + textBox2.Text + "','" + textBox3.Text + "'," + textBox4.Text + ")", con);
+                        else
+                            MessageBox.Show("Такого исполнителя не существует");
+                    }
                     else MessageBox.Show("Введите данные в каждое поле");
                     break;
-                case "Composition_album":
+                case "Composition_Album":
+                    add = false; dadd = true;
                     if ((textBox1.Text != "") && (textBox2.Text != ""))
-                        sda = new SqlDataAdapter(@"Insert Into Composition_Album Values(" + textBox1.Text + "," + textBox2.Text + ")", con);
+                    {
+                        sda = new SqlDataAdapter(@"Select * From Album_info", con);
+                        dt = new DataTable();
+                        sda.Fill(dt);
+                        CNT = dt.Rows.Count;
+                        for (int j = 0; j < CNT; j++)
+                        {
+                            get = dt.Rows[j].Field<int>("ID_Album");
+                            if (get.ToString() == textBox1.Text.ToString())
+                                add = true;
+                        }
+                        sda = new SqlDataAdapter(@"Select * From Song", con);
+                        dt = new DataTable();
+                        sda.Fill(dt);
+                        CNT = dt.Rows.Count;
+                        for (int j = 0; j < CNT; j++)
+                        {
+                            get1 = dt.Rows[j].Field<int>("ID_Song");
+                            if (get1.ToString() == textBox2.Text.ToString())
+                                add = true;
+                        }
+                        sda = new SqlDataAdapter(@"Select * From Composition_album", con);
+                        dt = new DataTable();
+                        sda.Fill(dt);
+                        CNT = dt.Rows.Count;
+                        for (int j = 0; j < CNT; j++)
+                        {
+                            get = dt.Rows[j].Field<int>("ID_Song");
+                            get1 = dt.Rows[j].Field<int>("ID_Album");
+                            if ((get.ToString() == textBox1.Text.ToString()) && (get1.ToString() == textBox2.Text.ToString()))
+                            {
+                                dadd = false;
+                            }
+                        }
+
+                        if (add && dadd)
+                            sda = new SqlDataAdapter(@"Insert Into Composition_Album Values(" + textBox1.Text + "," + textBox2.Text + ")", con);
+                        else if (!add)
+                            MessageBox.Show("Такого альбома или песни не существует");
+                        else if (!dadd)
+                            MessageBox.Show("Такая запись уже существует");
+                        
+                    }
                     else MessageBox.Show("Введите данные в каждое поле");
                     break;
                 case "Genre":
@@ -200,19 +277,124 @@ namespace _6
                       else MessageBox.Show("Введите данные в каждое поле");
                     break;
                 case "Listening":
-                    if ((textBox1.Text != "") && (textBox2.Text != "") && (textBox3.Text != "")) 
-                        sda = new SqlDataAdapter(@"Insert Into Listening Values(" + textBox1.Text + "," + textBox2.Text + ",'" + textBox3.Text + "')", con);
-                      else MessageBox.Show("Введите данные в каждое поле");
+                    add = false; dadd = true;
+                    if ((textBox1.Text != "") && (textBox2.Text != "") && (textBox3.Text != ""))
+                    {
+                        sda = new SqlDataAdapter(@"Select * From Song", con);
+                        dt = new DataTable();
+                        sda.Fill(dt);
+                        CNT = dt.Rows.Count;
+                        for (int j = 0; j < CNT; j++)
+                        {
+                            get = dt.Rows[j].Field<int>("ID_Song");
+                            if (get.ToString() == textBox1.Text.ToString())
+                                add = true;
+                        }
+                        sda = new SqlDataAdapter(@"Select * From Songer", con);
+                        dt = new DataTable();
+                        sda.Fill(dt);
+                        CNT = dt.Rows.Count;
+                        for (int j = 0; j < CNT; j++)
+                        {
+                            get1 = dt.Rows[j].Field<int>("ID_Songer");
+                            if (get1.ToString() == textBox2.Text.ToString())
+                                add = true;
+                        }
+                        sda = new SqlDataAdapter(@"Select * From Listening", con);
+                        dt = new DataTable();
+                        sda.Fill(dt);
+                        CNT = dt.Rows.Count;
+                        for (int j = 0; j < CNT; j++)
+                        {
+                            get = dt.Rows[j].Field<int>("ID_Song");
+                            get1 = dt.Rows[j].Field<int>("ID_Songer");
+                            get2 = dt.Rows[j].Field<DateTime>("DateTime_Listening");
+                            if ((get.ToString() == textBox1.Text.ToString()) && (get1.ToString() == textBox2.Text.ToString()) && (get2.ToString() == textBox3.Text.ToString())) 
+                            {
+                                dadd = false;
+                            }
+                        }
+
+                        if (add && dadd)
+                            sda = new SqlDataAdapter(@"Insert Into Listening Values(" + textBox1.Text + "," + textBox2.Text + ",'" + textBox3.Text + "')", con);
+                        else if (!add)
+                            MessageBox.Show("Такого исполнителя или песни не существует");
+                        else if (!dadd)
+                            MessageBox.Show("Такая запись уже существует");
+                    }
+                    else MessageBox.Show("Введите данные в каждое поле");
                     break;
                 case "Participation":
+                    add = false; dadd = true;
                     if ((textBox1.Text != "") && (textBox2.Text != "") && (textBox3.Text != "") && (textBox4.Text != "") && (textBox5.Text != ""))
-                        sda = new SqlDataAdapter(@"Insert Into Participation Values(" + textBox1.Text + "," + textBox2.Text + ",'" + textBox3.Text + "','" + textBox4.Text + "','" + textBox5.Text + "')", con);
-                      else MessageBox.Show("Введите данные в каждое поле");
+                    {
+                        sda = new SqlDataAdapter(@"Select * From Groups", con);
+                        dt = new DataTable();
+                        sda.Fill(dt);
+                        CNT = dt.Rows.Count;
+                        for (int j = 0; j < CNT; j++)
+                        {
+                            get = dt.Rows[j].Field<int>("ID_Group");
+                            if (get.ToString() == textBox1.Text.ToString())
+                                add = true;
+                        }
+                        sda = new SqlDataAdapter(@"Select * From Songer", con);
+                        dt = new DataTable();
+                        sda.Fill(dt);
+                        CNT = dt.Rows.Count;
+                        for (int j = 0; j < CNT; j++)
+                        {
+                            get1 = dt.Rows[j].Field<int>("ID_Songer");
+                            if (get1.ToString() == textBox2.Text.ToString())
+                                add = true;
+                        }
+                        sda = new SqlDataAdapter(@"Select * From Participation", con);
+                        dt = new DataTable();
+                        sda.Fill(dt);
+                        CNT = dt.Rows.Count;
+                        for (int j = 0; j < CNT; j++)
+                        {
+                            get = dt.Rows[j].Field<int>("ID_Group");
+                            get1 = dt.Rows[j].Field<int>("ID_Songer");
+                            if ((get.ToString() == textBox1.Text.ToString()) && (get1.ToString() == textBox2.Text.ToString()))
+                            {
+                                dadd = false;
+                            }
+                        }
+
+                        if (add && dadd)
+                            sda = new SqlDataAdapter(@"Insert Into Participation Values(" + textBox1.Text + "," + textBox2.Text + ",'" + textBox3.Text + "','" + textBox4.Text + "','" + textBox5.Text + "')", con);
+                        else if (!add)
+                            MessageBox.Show("Такого исполнителя или группы не существует");
+                        else if (!dadd)
+                            MessageBox.Show("Такая запись уже существует");
+                    }
+                    else MessageBox.Show("Введите данные в каждое поле");
                     break;
                 case "Song":
+                    add = true; dadd = true;
                     if ((textBox2.Text != "") && (textBox3.Text != "") && (textBox4.Text != ""))
-                        sda = new SqlDataAdapter(@"Insert Into Song Values('" + textBox2.Text + "','" + textBox3.Text + "'," + textBox4.Text + ")", con);
-                      else MessageBox.Show("Введите данные в каждое поле");
+                    {
+                        sda = new SqlDataAdapter(@"Select * From Genre", con);
+                        dt = new DataTable();
+                        sda.Fill(dt);
+                        CNT = dt.Rows.Count;
+                        for (int j = 0; j < CNT; j++)
+                        {
+                            get = dt.Rows[j].Field<int>("ID_Genre");
+                            MessageBox.Show(get.ToString(), textBox4.Text.ToString());
+                            if (get.ToString() == textBox4.Text.ToString())
+                            {
+                                add = false;
+                                MessageBox.Show("now + "+add.ToString());
+                            }
+                        }
+                        if (!add)
+                            sda = new SqlDataAdapter(@"Insert Into Song Values('" + textBox2.Text + "','" + textBox3.Text + "'," + textBox4.Text + ")", con);
+                        else
+                            MessageBox.Show("Такого жанра не существует");
+                    }
+                    else MessageBox.Show("Введите данные в каждое поле");
                     break;
                 case "Songer":
                     if ((textBox2.Text != "") && (textBox3.Text != "") && (textBox4.Text != "") && (textBox5.Text != ""))
@@ -269,6 +451,9 @@ namespace _6
             if (comboBox1.SelectedItem.ToString() == "Album_Info")
                 if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
                     e.Handled = true;
+            if(comboBox1.SelectedItem.ToString()=="Song")
+                if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 58) && e.KeyChar != 46)
+                    e.Handled = true;
         }
 
         private void textBox4_KeyPress(object sender, KeyPressEventArgs e)
@@ -316,6 +501,22 @@ namespace _6
 
         private void UpdateButton_Click(object sender, EventArgs e)
         {
+            int i = 0, I = 0;
+            while (i < textBox6.Text.Length)
+            {
+                if (textBox6.Text[i] == '\'')
+                {
+                    I++;
+                    if (i == 0)
+                        textBox6.Text = "\'\'" + textBox6.Text.Substring(i + 1, textBox6.Text.Length - I);
+                    if (i > 0 && i != textBox6.Text.Length-1) 
+                        textBox6.Text = textBox6.Text.Substring(0, i) + "\'\'" + textBox6.Text.Substring(i + 1, textBox6.Text.Length - (I*2));
+                    if (i == textBox6.Text.Length-1)
+                        textBox6.Text = textBox6.Text.Substring(0, i) + "\'\'";
+                    i++;
+                }
+                i++;
+            }
             if ((textBox6.Text != "") && ((comboBox2.SelectedItem.ToString()!="")&&(comboBox3.SelectedItem.ToString()!="")))
             {
                 switch (comboBox3.SelectedItem.ToString())
@@ -359,50 +560,51 @@ namespace _6
             else
                 MessageBox.Show("Введите верные данные для изменения!", "Ошибка");
             textBox6.Clear();
-
         }
 
         private void textBox6_KeyPress(object sender, KeyPressEventArgs e)
         {
-            switch (comboBox3.SelectedItem.ToString())
-            {
-                case "Year_of_issue":
-                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
-                        e.Handled = true;
-                    break;
-                case "ID_Songer":
-                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
-                        e.Handled = true;
-                    break;
-                case "ID_Album":
-                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
-                        e.Handled = true;
-                    break;
-                case "ID_Song":
-                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
-                        e.Handled = true;
-                    break;
-                case "DateTime_Listening":
-                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 58) && e.KeyChar!=46)
-                        e.Handled = true;
-                    break;
-                case "Date_in":
-                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57) && e.KeyChar!=46)
-                        e.Handled = true;
-                    break;
-                case "Date_out":
-                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
-                        e.Handled = true;
-                    break;
-                case "ID_Genre":
-                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
-                        e.Handled = true;
-                    break;
-                case "Duration":
-                    if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 58))
-                        e.Handled = true;
-                    break;
-            }
+            if (comboBox2.SelectedItem.ToString() == null && comboBox3.SelectedItem.ToString() == null)
+                e.Handled = true;
+                switch (comboBox3.SelectedItem.ToString())
+                {
+                    case "Year_of_issue":
+                        if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                            e.Handled = true;
+                        break;
+                    case "ID_Songer":
+                        if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                            e.Handled = true;
+                        break;
+                    case "ID_Album":
+                        if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                            e.Handled = true;
+                        break;
+                    case "ID_Song":
+                        if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                            e.Handled = true;
+                        break;
+                    case "DateTime_Listening":
+                        if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 58) && e.KeyChar != 46)
+                            e.Handled = true;
+                        break;
+                    case "Date_in":
+                        if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57) && e.KeyChar != 46)
+                            e.Handled = true;
+                        break;
+                    case "Date_out":
+                        if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                            e.Handled = true;
+                        break;
+                    case "ID_Genre":
+                        if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 57))
+                            e.Handled = true;
+                        break;
+                    case "Duration":
+                        if (e.KeyChar != 8 && (e.KeyChar < 48 || e.KeyChar > 58) && e.KeyChar != 46)
+                            e.Handled = true;
+                        break;
+                }
         }
 
         private void MinimizeButton_Click(object sender, EventArgs e)

@@ -10,9 +10,6 @@ namespace _6
 {
     public partial class Application : Form
     {
-        SqlDataAdapter sda;
-        BindingSource bs1 = new BindingSource();
-        DataTable dt;
         SqlConnection con = new SqlConnection();
         IDictionary<string, string> playList = new Dictionary<string, string>();
         int nowplaying = -1;
@@ -23,13 +20,35 @@ namespace _6
         private BlockAlignReductionStream stream = null;
         private DirectSoundOut output = null;
         int index = 0;
-        //int dur = 0;
+        string namesonger="";
         private int x = 0, y = 0;
+
+        string ChangeString(string str)
+        {
+            int i = 0, I = 0;
+            while (i < str.Length)
+            {
+                if (str[i] == '\'')
+                {
+                    I++;
+                    if (i == 0)
+                        str = "\'\'" + str.Substring(i + 1, str.Length - I);
+                    if (i > 0 && i != str.Length - 1)
+                        str= str.Substring(0, i) + "\'\'" + str.Substring(i + 1, str.Length - (I * 2));
+                    if (i == str.Length - 1)
+                        str = str.Substring(0, i) + "\'\'";
+                    i++;
+                }
+                i++;
+            }
+            return str;
+        }
 
         void AddToDb()
         {
             var mp3File = TagLib.File.Create(playList[(string)PlayListComponent.SelectedItem]);
-            if (mp3File.Tag.Title != "" && String.Join(",", mp3File.Tag.Performers) != "")
+            namesonger = String.Join(",", mp3File.Tag.Performers);
+            if (mp3File.Tag.Title != "" && namesonger != "")
             {
                 bool add = true;
                 int idGenre = 0, idSonger = 0, idSong = 0, idAlbum = 0, idCompAlbum = 0, idCompSong = 0;
@@ -58,6 +77,9 @@ namespace _6
                 sdaComposition.Fill(dtComposition);
                 dataGridView1.DataSource = dtSonger;
                 int cntSonger = dtSonger.Rows.Count;
+                namesonger = ChangeString(namesonger);
+                mp3File.Tag.Album = ChangeString(mp3File.Tag.Album);
+                mp3File.Tag.Title = ChangeString(mp3File.Tag.Title);
                 /******************************************************Songer*************************************************************/
                 for (int i = 0; i < cntSonger; i++)
                 {
@@ -65,7 +87,7 @@ namespace _6
                     sdaSonger = new SqlDataAdapter(@"Select * From Songer ORDER BY 1", con);
                     dtSonger = new DataTable();
                     sdaSonger.Fill(dtSonger);
-                    if (songer.ToUpper() == String.Join(",", mp3File.Tag.Performers).ToUpper())
+                    if (songer.ToUpper() == namesonger.ToUpper())
                     {
                         add = false;
                         posSonger = i;
@@ -73,7 +95,7 @@ namespace _6
                 }
                 if (add)
                 {
-                    sdaSonger = new SqlDataAdapter(@"Insert INTO Songer(FIO) Values ('" + String.Join(",", mp3File.Tag.Performers) + "')", con);
+                    sdaSonger = new SqlDataAdapter(@"Insert INTO Songer(FIO) Values ('" + namesonger + "')", con);
                     dtSonger = new DataTable();
                     sdaSonger.Fill(dtSonger);
                     dataGridView1.DataSource = dtSonger;
@@ -85,8 +107,8 @@ namespace _6
                 for (int i = 0; i < cntSonger; i++)
                 {
                     songer = dtSonger.Rows[i].Field<string>("FIO");
-                    
-                    if (songer.ToUpper() == String.Join(",", mp3File.Tag.Performers).ToUpper())
+
+                    if (songer.ToUpper() == namesonger.ToUpper())
                     {
                         add = false;
                         posSonger = i;
@@ -113,7 +135,7 @@ namespace _6
                         add = false;
                         posGenre = i;
                     }
-                    
+
                 }
                 if (add)
                 {
@@ -191,7 +213,6 @@ namespace _6
                     sdaAlbum.Fill(dtAlbum);
                     if (mp3File.Tag.Album == null || album.ToUpper() == mp3File.Tag.Album.ToUpper())
                     {
-
                         add = false;
                         posAlbum = i;
                     }
@@ -237,7 +258,7 @@ namespace _6
                     dtComposition = new DataTable();
                     sdaComposition.Fill(dtComposition);
                     //MessageBox.Show("csong=" + csong, "idsong=" + idSong);
-                    if (csong==idSong && mp3File.Tag.Album!="")
+                    if (csong == idSong && mp3File.Tag.Album != "")
                     {
                         add = false;
                         posCompSong = i;
@@ -252,6 +273,8 @@ namespace _6
                     dataGridView1.DataSource = dtComposition;
                 }
             }
+            else
+                MessageBox.Show("Извините, один из ключевых тегов отсутствует. Файл не будет добавлен в базу", "Ошибка");
         }
         private void FollowSize()
         {

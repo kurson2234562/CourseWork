@@ -224,6 +224,7 @@
             this.Controls.Add(this.dataGridView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Location = new System.Drawing.Point(100, 100);
+            this.MinimumSize = new System.Drawing.Size(523, 0);
             this.Name = "DataBase";
             this.Text = "DataBase";
             this.Load += new System.EventHandler(this.DataBase_Load);

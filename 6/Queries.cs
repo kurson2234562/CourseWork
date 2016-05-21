@@ -53,6 +53,8 @@ namespace _6
                     sda.Fill(dt);
                     dataGridView1.DataSource = dt;
                     break;
+                default:
+                    break;
             }
 
         }
@@ -71,6 +73,12 @@ namespace _6
         private void MinimizeButton_Click(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
+        }
+
+        private void dataGridView1_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            TextBox txt = (TextBox)e.Control;
+            txt.ReadOnly = true;
         }
 
         private void Queries_MouseDown(object sender, MouseEventArgs e)
