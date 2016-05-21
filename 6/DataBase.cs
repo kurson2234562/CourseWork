@@ -7,6 +7,7 @@ namespace _6
 {
     public partial class DataBase : Form
     {
+        private int x = 0, y = 0;
         SqlDataAdapter sda;
         public bool adminthis;     
         BindingSource bs1 = new BindingSource();
@@ -40,6 +41,13 @@ namespace _6
             if (comboBox1.SelectedItem.ToString() != "")
             {
                 sda = new SqlDataAdapter(@"Select * From " + comboBox1.SelectedItem.ToString(), con);
+                dt = new DataTable();
+                sda.Fill(dt);
+                dataGridView1.DataSource = dt;
+            }
+            if (comboBox1.SelectedItem.ToString() == "Listening")
+            {
+                sda = new SqlDataAdapter(@"Select * From Listening ORDER BY DateTime_Listening", con);
                 dt = new DataTable();
                 sda.Fill(dt);
                 dataGridView1.DataSource = dt;
@@ -85,6 +93,20 @@ namespace _6
         {
             Queries form = new Queries();
             form.Show();
+        }
+
+        private void DataBase_MouseDown(object sender, MouseEventArgs e)
+        {
+            x = e.X;
+            y = e.Y;
+        }
+
+        private void DataBase_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                this.Location = new System.Drawing.Point(this.Location.X + (e.X - x), this.Location.Y + (e.Y - y));
+            }
         }
     }
 }

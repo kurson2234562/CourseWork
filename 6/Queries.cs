@@ -41,6 +41,18 @@ namespace _6
                     sda.Fill(dt);
                     dataGridView1.DataSource = dt;
                     break;
+                case 2:
+                    sda = new SqlDataAdapter(@"Select TOP 10 Count(*) as Количество_прослушиваний, FIO From Listening INNER JOIN Songer ON Listening.ID_Songer=Songer.ID_Songer Group BY FIO Order by 1 DESC", con);
+                    dt = new DataTable();
+                    sda.Fill(dt);
+                    dataGridView1.DataSource = dt;
+                    break;
+                case 3:
+                    sda = new SqlDataAdapter(@"Select TOP 10 Count(*) as Количество_прослушиваний, Name_Song, Name_Album From((Listening INNER JOIN Song ON Listening.ID_Song = Song.ID_Song) INNER JOIN Composition_Album ON Composition_Album.ID_Song = Song.ID_Song) INNER JOIN Album_Info ON Album_Info.ID_Album = Composition_Album.ID_Album Group BY Song.ID_Song, Name_Song, Name_Album Order by 1 DESC", con);
+                    dt = new DataTable();
+                    sda.Fill(dt);
+                    dataGridView1.DataSource = dt;
+                    break;
             }
 
         }

@@ -140,6 +140,7 @@
             // 
             // MinimizeButton
             // 
+            this.MinimizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.MinimizeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(66)))), ((int)(((byte)(98)))));
             this.MinimizeButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MinimizeButton.Enabled = false;
@@ -157,6 +158,7 @@
             // 
             // MaximizeButton
             // 
+            this.MaximizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.MaximizeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(66)))), ((int)(((byte)(98)))));
             this.MaximizeButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.MaximizeButton.Enabled = false;
@@ -176,6 +178,7 @@
             // 
             // CloseButton
             // 
+            this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.CloseButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(66)))), ((int)(((byte)(98)))));
             this.CloseButton.Cursor = System.Windows.Forms.Cursors.Hand;
             this.CloseButton.FlatAppearance.BorderSize = 0;
@@ -220,9 +223,12 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.dataGridView1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Location = new System.Drawing.Point(100, 100);
             this.Name = "DataBase";
             this.Text = "DataBase";
             this.Load += new System.EventHandler(this.DataBase_Load);
+            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.DataBase_MouseDown);
+            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.DataBase_MouseMove);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.audiolibDataSetBindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.audio_libDataSet)).EndInit();

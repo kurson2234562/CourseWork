@@ -102,7 +102,9 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "Информация о прослушанных треках",
-            "Последний прослушанный трек"});
+            "Последний прослушанный трек",
+            "Топ-10 любимых исполнителей",
+            "Топ-10 любимых треков"});
             this.comboBox1.Location = new System.Drawing.Point(12, 68);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(686, 21);
