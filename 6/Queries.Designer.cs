@@ -36,6 +36,7 @@
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.audio_libDataSet = new _6.Audio_libDataSet();
             this.audiolibDataSetBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.label1 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audio_libDataSet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.audiolibDataSetBindingSource)).BeginInit();
@@ -46,7 +47,6 @@
             this.MinimizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.MinimizeButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(57)))), ((int)(((byte)(66)))), ((int)(((byte)(98)))));
             this.MinimizeButton.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.MinimizeButton.Enabled = false;
             this.MinimizeButton.FlatAppearance.BorderSize = 0;
             this.MinimizeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.MinimizeButton.ForeColor = System.Drawing.Color.White;
@@ -104,7 +104,9 @@
             "Информация о прослушанных треках",
             "Последний прослушанный трек",
             "Топ-10 любимых исполнителей",
-            "Топ-10 любимых треков"});
+            "Топ-10 любимых треков",
+            "Топ-10 любимых альбомов",
+            "Топ-5 любимых жанров"});
             this.comboBox1.Location = new System.Drawing.Point(12, 68);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(686, 21);
@@ -130,12 +132,24 @@
             this.audiolibDataSetBindingSource.DataSource = this.audio_libDataSet;
             this.audiolibDataSetBindingSource.Position = 0;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 13F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(12, 33);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(150, 22);
+            this.label1.TabIndex = 35;
+            this.label1.Text = "Прослушиваний ";
+            // 
             // Queries
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(31)))), ((int)(((byte)(37)))), ((int)(((byte)(61)))));
             this.ClientSize = new System.Drawing.Size(710, 412);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.MinimizeButton);
@@ -151,6 +165,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.audio_libDataSet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.audiolibDataSetBindingSource)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -163,5 +178,6 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private Audio_libDataSet audio_libDataSet;
         private System.Windows.Forms.BindingSource audiolibDataSetBindingSource;
+        private System.Windows.Forms.Label label1;
     }
 }

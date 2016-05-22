@@ -48,7 +48,19 @@ namespace _6
                     dataGridView1.DataSource = dt;
                     break;
                 case 3:
-                    sda = new SqlDataAdapter(@"Select TOP 10 Count(*) as Количество_прослушиваний, Name_Song, Name_Album From((Listening INNER JOIN Song ON Listening.ID_Song = Song.ID_Song) INNER JOIN Composition_Album ON Composition_Album.ID_Song = Song.ID_Song) INNER JOIN Album_Info ON Album_Info.ID_Album = Composition_Album.ID_Album Group BY Song.ID_Song, Name_Song, Name_Album Order by 1 DESC", con);
+                    sda = new SqlDataAdapter(@"Select TOP 10 Count(*) as Количество_прослушиваний, Name_Song, FIO, Name_Album From (((Listening INNER JOIN Song ON Listening.ID_Song=Song.ID_Song) INNER JOIN Composition_Album ON Composition_Album.ID_Song=Song.ID_Song) INNER JOIN Album_Info ON Album_Info.ID_Album=Composition_Album.ID_Album) INNER JOIN Songer ON Listening.ID_Songer=Songer.ID_Songer Group BY Song.ID_Song, Name_Song, Name_Album, FIO Order by 1 DESC", con);
+                    dt = new DataTable();
+                    sda.Fill(dt);
+                    dataGridView1.DataSource = dt;
+                    break;
+                case 4:
+                    sda = new SqlDataAdapter(@"Select TOP 10 Count(*) as Количество_прослушиваний, Name_Album, FIO From  (((Listening INNER JOIN Song ON Listening.ID_Song=Song.ID_Song)INNER JOIN Composition_Album ON Composition_Album.ID_Song=Song.ID_Song) INNER JOIN Album_Info ON Album_Info.ID_Album=Composition_Album.ID_Album) INNER JOIN Songer ON Songer.ID_Songer=Album_Info.ID_Songer Group BY Name_Album, FIO Order by 1 DESC", con);
+                    dt = new DataTable();
+                    sda.Fill(dt);
+                    dataGridView1.DataSource = dt;
+                    break;
+                case 5:
+                    sda = new SqlDataAdapter(@"Select TOP 5 Count(*) as Количество_прослушиваний, Name_Genre From  (Listening INNER JOIN Song ON Listening.ID_Song=Song.ID_Song)INNER JOIN Genre ON Genre.ID_Genre= Song.ID_Genre Group BY Name_genre Order by 1 DESC", con);
                     dt = new DataTable();
                     sda.Fill(dt);
                     dataGridView1.DataSource = dt;
@@ -63,6 +75,13 @@ namespace _6
         {
             con.ConnectionString = @"Data Source=.;Initial Catalog=Audio_lib; Integrated Security=true";
             con.Open();
+            sda = new SqlDataAdapter(@"Select Count(*) as Count_Listening From Listening", con);
+            dt = new DataTable();
+            sda.Fill(dt);
+            //dataGridView1.DataSource = dt;
+            int get = dt.Rows[0].Field<int>("Count_Listening");
+            label1.Text +=": "+get;
+
         }
 
         private void CloseButton_Click(object sender, EventArgs e)
